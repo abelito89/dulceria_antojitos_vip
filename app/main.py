@@ -1,4 +1,4 @@
-from app.infraestructure.db.db import init_db
+from app.infrastructure.db.db import init_db
 
 def main():
     """Función principal que inicializa la base de datos y muestra un mensaje de confirmación.

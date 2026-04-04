@@ -12,8 +12,6 @@ from ..infrastructure.db.repositories.material_repo import (
 )
 
 
-
-
 def calcular_costo_receta(receta_id: int):
     receta = get_receta(receta_id)
 

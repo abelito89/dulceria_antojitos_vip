@@ -52,3 +52,19 @@ def get_ingredientes_by_receta(receta_id: int) -> list:
     conn.close()
 
     return rows
+
+def obtener_recetas() -> list:
+    """Obtiene una lista con el id y el nombre de todas las recetas disponibles en la tabla receta
+
+    Returns:
+        list: Lista de diccionarios con claves id y nombre.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, nombre_producto FROM receta")
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [{"id": row["id"], "nombre": row["nombre_producto"]} for row in rows]

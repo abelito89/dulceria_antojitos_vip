@@ -1,6 +1,7 @@
 from ..services.cost_service import calcular_costo_receta
 from .views.costos_view import costos_view
 from ..services.material_service import agregar_materia_prima_service
+from ..services.inventory_service import agregar_lote_service
 
 
 def calcular_click(e,resultado_container,receta_dropdown,page) -> None:
@@ -57,4 +58,25 @@ def agregar_materia_prima_click(e, nombre_input, unidad_base_input, unidad_consu
     
     except Exception as ex:
         resultado.value = "Error: " + str(ex)
+    page.update()
+
+
+def agregar_lote_click(e,materia_prima_id_input, cantidad_inicial_input, precio_unitario_input, fecha_compra_input,page) -> None:
+    """Construye la vista de compras, que permite al usuario agregar un nuevo lote a la base de datos.
+
+    La función solicita al usuario que ingrese el ID de la materia prima, la cantidad inicial del lote, el precio unitario y la fecha de compra. Luego, llama a la función agregar_lote_service() para agregar el nuevo lote a la base de datos.
+
+    Raises:
+        ValueError: Si alguno de los parámetros ingresados por el usuario es inválido.
+    """
+    try:
+        agregar_lote_service(
+            int(materia_prima_id_input.value), 
+            float(cantidad_inicial_input.value), 
+            float(precio_unitario_input.value), 
+            fecha_compra_input.value
+        )
+        print("Lote agregado exitosamente.")
+    except ValueError as e:
+        print(f"Error: {e}")
     page.update()

@@ -30,6 +30,7 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         destinations=[
             ft.NavigationRailDestination(icon=ft.Icons.CALCULATE, label="Calculadora"),
             ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Materias primas"),
+            ft.NavigationRailDestination(icon=ft.Icons.SHOPPING_CART, label="Compras")
         ],
         on_change=handle_route_change
     )

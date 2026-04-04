@@ -1,9 +1,16 @@
 from ..db import get_connection
+from typing import Dict
 
-
-def get_unidades_by_materia_prima(materia_prima_id: int):
-    """
-    Devuelve las unidades y el factor de conversión de un insumo.
+def get_unidades_by_materia_prima(materia_prima_id: int) -> Dict:
+    """Realiza consulta SQL para obtener la unidad base, unidad de consumo y factor de conversión
+    
+    Args:
+        materia_prima_id (int): El ID de la materia prima para la cual se desean obtener las unidades y el factor de conversión.
+    
+    Returns:
+        Dict: Un diccionario con las claves 'unidad_base', 'unidad_consumo' y 'factor_conversion' con los valores correspondientes de la materia prima especificada.
+    Raises:
+        ValueError: Si no existe una materia prima con el ID proporcionado.
     """
 
     conn = get_connection()
@@ -30,9 +37,16 @@ def get_unidades_by_materia_prima(materia_prima_id: int):
     return row
 
 
-def insertar_materia_prima(nombre: str, unidad_base: str, unidad_consumo: str, factor_conversion: float):
-    """
-    Inserta una nueva materia prima en la base de datos.
+def insertar_materia_prima(nombre: str, unidad_base: str, unidad_consumo: str, factor_conversion: float) -> None:
+    """Realiza una inserción SQL para agregar una nueva materia prima a la base de datos con los datos proporcionados.
+
+    Args:
+        nombre (str): El nombre de la materia prima a insertar.
+        unidad_base (str): La unidad base de la materia prima.
+        unidad_consumo (str): La unidad de consumo de la materia prima.
+        factor_conversion (float): El factor de conversión de la materia prima.
+    Returns:
+        None
     """
 
     conn = get_connection()

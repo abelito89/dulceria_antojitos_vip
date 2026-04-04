@@ -1,9 +1,19 @@
 import flet as ft
 from ...services.recipe_service import listar_recetas
+from typing import Callable, Dict, Any
 
 
 
-def build_calculadora_view(page: ft.Page, calcular_click):
+def build_calculadora_view(page: ft.Page, calcular_click: Callable) -> ft.Control:
+    """Construye la vista de la calculadora de costos, que incluye un dropdown para seleccionar una receta y un botón para calcular su costo.
+
+    Args:
+        page (ft.Page): Página
+        calcular_click (Callable): La función a llamar cuando se haga clic en el botón de cálculo
+
+    Returns:
+        ft.Control: La vista de la calculadora de costos
+    """
     
     recetas = listar_recetas()
     dropdown = ft.Dropdown(
@@ -33,8 +43,15 @@ def build_calculadora_view(page: ft.Page, calcular_click):
     )
 
 
-def costos_view(resultado):
+def costos_view(resultado: Dict[str, Any]) -> ft.Control:
+    """Construye la vista que muestra el resultado del cálculo de costos, incluyendo el nombre del producto, costo total y costo unitario.
 
+    Args:
+        resultado (Dict[str, Any]): El diccionario con los resultados del cálculo de costos.
+
+    Returns:
+        ft.Control: La vista que muestra el resultado del cálculo de costos.
+    """
     return ft.Container(
         content=ft.Column(
             [

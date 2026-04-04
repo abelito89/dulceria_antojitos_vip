@@ -2,7 +2,7 @@ from .infrastructure.db.db import init_db
 import flet as ft
 from .ui.ui import main as ui_main
 
-def main():
+def main() -> None:
     """Función principal que inicializa la base de datos y muestra un mensaje de confirmación.
     """
     init_db()

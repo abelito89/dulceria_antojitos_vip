@@ -3,7 +3,16 @@ from .views.costos_view import build_calculadora_view
 from .views.materiales_view import build_materiales_view
 from .callbacks import calcular_click
 
-def get_view_by_index(index, page):
+def get_view_by_index(index: int, page: ft.Page) -> ft.Control:
+    """Devuelve la vista correspondiente al índice seleccionado en la barra de navegación lateral.
+
+    Args:
+        index (int): Índice del destino seleccionado en la barra de navegación lateral.
+        page (ft.Page): La página de Flet donde se mostrará la vista
+
+    Returns:
+        ft.Control: El control que representa la vista correspondiente
+    """
     # Mapeo simple: Índice -> Función constructora
     views = {
         0: lambda: build_calculadora_view(page, calcular_click),

@@ -10,9 +10,23 @@ from ..services.unit_service import consumo_a_base
 from ..infrastructure.db.repositories.material_repo import (
     get_unidades_by_materia_prima,
 )
+from typing import Dict, Any
 
+def calcular_costo_receta(receta_id: int) -> Dict[str, Any]:
+    """Calcula el costo total y unitario de una receta dada su ID.
 
-def calcular_costo_receta(receta_id: int):
+    Args:
+        receta_id (int): ID de la receta para la cual se desea calcular el costo
+
+    Raises:
+        ValueError: La receta no existe
+        ValueError: La receta no tiene ingredientes
+        ValueError: No hay stock disponible para una de las materias primas
+        ValueError: El rendimiento debe ser mayor que 0
+
+    Returns:
+        dict: Un diccionario con el ID de la receta, nombre del producto, costo total, costo unitario y detalle de los ingredientes
+    """
     receta = get_receta(receta_id)
 
     if receta is None:
@@ -29,8 +43,6 @@ def calcular_costo_receta(receta_id: int):
     for ingrediente in ingredientes:
         materia_prima_id = ingrediente["materia_prima_id"]
         cantidad = ingrediente["cantidad"]
-
-
 
         precio = get_max_price_available(materia_prima_id)
 
@@ -49,7 +61,6 @@ def calcular_costo_receta(receta_id: int):
 
         # Calcular costo correctamente
         costo = cantidad_en_base * precio
-
 
         costo_total += costo
 

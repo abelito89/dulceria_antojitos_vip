@@ -1,16 +1,14 @@
 from ..services.cost_service import calcular_costo_receta
+from .views.costos_view import costos_view
 
 
-def calcular_click(e,resultado_text,receta_input,page):
+def calcular_click(e,costos,receta_input,page):
         try:
             receta_id = int(receta_input.value)
             resultado = calcular_costo_receta(receta_id)
-
-            resultado_text.value = f"""Producto: {resultado['nombre_producto']}
-                            Costo total: {resultado['costo_total']}
-                            Costo unitario: {resultado['costo_unitario']}
-                            """
+            costos.value = costos_view(resultado)
+            
         except Exception as ex:
-            resultado_text.value = f"Error: {str(ex)}"
+            costos.value = f"Error: {str(ex)}"
 
         page.update()

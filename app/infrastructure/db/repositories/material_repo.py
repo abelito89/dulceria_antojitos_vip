@@ -40,7 +40,7 @@ def insertar_materia_prima(nombre: str, unidad_base: str, unidad_consumo: str, f
 
     cursor.execute(
         """
-        INSERT INTO materia_prima (nombre, unidad_base, unidad_consumo, factor_conversion)
+        INSERT INTO materia_prima (nombre_insumo, unidad_base, unidad_consumo, factor_conversion)
         VALUES (?, ?, ?, ?)
         """,
         (nombre, unidad_base, unidad_consumo, factor_conversion)

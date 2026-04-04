@@ -12,15 +12,15 @@ def main(page: ft.Page):
     receta_input = ft.TextField(label="ID Receta", width=200)
 
     # Resultado
-    resultado_text = ft.Text()
+    resultado_container = ft.Container()
 
     # Botón
-    boton = ft.ElevatedButton("Calcular", on_click=lambda e: calcular_click(e, resultado_text, receta_input, page))
+    boton = ft.ElevatedButton("Calcular", on_click=lambda e: calcular_click(e, resultado_container, receta_input, page))
 
     page.add(
         ft.Column([
             receta_input,
             boton,
-            resultado_text
+            resultado_container
         ])
     )

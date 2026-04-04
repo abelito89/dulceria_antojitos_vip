@@ -1,11 +1,17 @@
-from infrastructure.db.repositories.recipe_repo import (
+from ..infrastructure.db.repositories.recipe_repo import (
     get_receta,
     get_ingredientes_by_receta,
 )
 
-from infrastructure.db.repositories.lot_repo import (
+from ..infrastructure.db.repositories.lot_repo import (
     get_max_price_available,
 )
+from ..services.unit_service import consumo_a_base
+from ..infrastructure.db.repositories.material_repo import (
+    get_unidades_by_materia_prima,
+)
+
+
 
 
 def calcular_costo_receta(receta_id: int):
@@ -26,6 +32,8 @@ def calcular_costo_receta(receta_id: int):
         materia_prima_id = ingrediente["materia_prima_id"]
         cantidad = ingrediente["cantidad"]
 
+
+
         precio = get_max_price_available(materia_prima_id)
 
         if precio is None:
@@ -33,13 +41,27 @@ def calcular_costo_receta(receta_id: int):
                 f"No hay stock disponible para materia_prima_id={materia_prima_id}"
             )
 
-        costo = cantidad * precio
+        # Obtener unidades del insumo
+        unidades = get_unidades_by_materia_prima(materia_prima_id)
+
+        factor = unidades["factor_conversion"]
+
+        # Convertir cantidad a unidad_base
+        cantidad_en_base = consumo_a_base(cantidad, factor)
+
+        # Calcular costo correctamente
+        costo = cantidad_en_base * precio
+
+
         costo_total += costo
 
         detalle.append({
             "materia_prima_id": materia_prima_id,
-            "cantidad": cantidad,
-            "precio_usado": precio,
+            "cantidad_consumo": cantidad,
+            "unidad_consumo": unidades["unidad_consumo"],
+            "cantidad_base": cantidad_en_base,
+            "unidad_base": unidades["unidad_base"],
+            "precio_unitario": precio,
             "costo": costo,
         })
 

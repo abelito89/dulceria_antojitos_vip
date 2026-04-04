@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS materia_prima (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_insumo TEXT NOT NULL UNIQUE,
     unidad_base TEXT NOT NULL,
-    unidad_consumo TEXT NOT NULL
+    unidad_consumo TEXT NOT NULL,
+    factor_conversion REAL NOT NULL CHECK (factor_conversion > 0)
 );
 
 -- =========================

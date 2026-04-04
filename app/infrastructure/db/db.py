@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from app.services.ruta_datos_app import get_app_data_path
+from ...services.ruta_datos_app import get_app_data_path
 
 BASE_DIR = Path(__file__).resolve().parent # Obtener el directorio base del proyecto (app/infraestructure/db)
 DB_PATH = get_app_data_path() / "dulceria.db"

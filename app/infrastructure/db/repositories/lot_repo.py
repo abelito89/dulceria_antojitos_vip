@@ -35,11 +35,11 @@ def get_max_price_available(materia_prima_id: int) -> float | None:
     return float(row["max_price"])
 
 
-def crear_lote(materia_prima_id: int, cantidad_inicial: float, precio_unitario: float, fecha_compra: str) -> None:
+def crear_lote(materia_prima_nombre_input: str, cantidad_inicial: float, precio_unitario: float, fecha_compra: str) -> None:
     """Realiza una inserción SQL para agregar un nuevo lote a la base de datos con los datos proporcionados.
 
     Args:
-        - materia_prima_id (int): El ID de la materia prima para la cual se desea crear un nuevo lote.
+        - materia_prima_nombre_input (str): El nombre de la materia prima para la cual se desea crear un nuevo lote.
         - cantidad_inicial (int): La cantidad inicial del lote.
         - cantidad_disponible (int): La cantidad disponible del lote.
         - precio_unitario (float): El precio unitario del lote.
@@ -51,6 +51,7 @@ def crear_lote(materia_prima_id: int, cantidad_inicial: float, precio_unitario: 
 
     conn = get_connection()
     cursor = conn.cursor()
+    
 
     cursor.execute(
         """
@@ -64,13 +65,14 @@ def crear_lote(materia_prima_id: int, cantidad_inicial: float, precio_unitario: 
         VALUES (?, ?, ?, ?, ?)
         """,
         (
-            materia_prima_id,
+            materia_prima_nombre_input,
             cantidad_inicial,
             cantidad_inicial,  # cantidad_disponible se inicializa con el mismo valor que cantidad_inicial
             precio_unitario,
             fecha_compra
         )
     )
+
 
     conn.commit()
     conn.close()

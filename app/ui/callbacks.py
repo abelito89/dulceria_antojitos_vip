@@ -61,7 +61,7 @@ def agregar_materia_prima_click(e, nombre_input, unidad_base_input, unidad_consu
     page.update()
 
 
-def agregar_lote_click(e,materia_prima_id_input, cantidad_inicial_input, precio_unitario_input, fecha_compra_input,page) -> None:
+def agregar_lote_click(e,materia_prima_nombre_input, cantidad_inicial_input, precio_unitario_input, fecha_compra_input,page) -> None:
     """Construye la vista de compras, que permite al usuario agregar un nuevo lote a la base de datos.
 
     La función solicita al usuario que ingrese el ID de la materia prima, la cantidad inicial del lote, el precio unitario y la fecha de compra. Luego, llama a la función agregar_lote_service() para agregar el nuevo lote a la base de datos.
@@ -69,14 +69,25 @@ def agregar_lote_click(e,materia_prima_id_input, cantidad_inicial_input, precio_
     Raises:
         ValueError: Si alguno de los parámetros ingresados por el usuario es inválido.
     """
+    boton = e.control
+    boton.disabled = True
+    page.update()
     try:
+
         agregar_lote_service(
-            int(materia_prima_id_input.value), 
+            materia_prima_nombre_input.value, 
             float(cantidad_inicial_input.value), 
             float(precio_unitario_input.value), 
             fecha_compra_input.value
         )
         print("Lote agregado exitosamente.")
+            # 🔥 limpiar formulario
+        materia_prima_nombre_input.value = None
+        cantidad_inicial_input.value = ""
+        precio_unitario_input.value = ""
+        fecha_compra_input.value = ""
     except ValueError as e:
         print(f"Error: {e}")
+    finally:
+        boton.disabled = False
     page.update()

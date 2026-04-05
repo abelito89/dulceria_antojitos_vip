@@ -1,6 +1,6 @@
 from ..infrastructure.db.repositories.lot_repo import crear_lote
 
-def agregar_lote_service(materia_prima_id: int, cantidad_inicial: float, precio_unitario: float, fecha_compra: str) -> None:
+def agregar_lote_service(materia_prima_nombre_input: str, cantidad_inicial: float, precio_unitario: float, fecha_compra: str) -> None:
     """Ejecuta la función crear_lote() para agregar un nuevo lote a la base de datos con los datos proporcionados.
 
     Args:
@@ -14,7 +14,7 @@ def agregar_lote_service(materia_prima_id: int, cantidad_inicial: float, precio_
         ValueError: Si alguno de los parámetros es inválido.
     """
 
-    if materia_prima_id <= 0:
+    if materia_prima_nombre_input is None:
         raise ValueError("El ID de la materia prima debe ser mayor que 0")
     if cantidad_inicial <= 0:
         raise ValueError("La cantidad inicial debe ser mayor que 0")
@@ -24,4 +24,4 @@ def agregar_lote_service(materia_prima_id: int, cantidad_inicial: float, precio_
         raise ValueError("La fecha de compra no puede estar vacía")
 
 
-    crear_lote(materia_prima_id, cantidad_inicial, precio_unitario, fecha_compra)
+    crear_lote(materia_prima_nombre_input, cantidad_inicial, precio_unitario, fecha_compra)

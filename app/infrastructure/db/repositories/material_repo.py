@@ -62,3 +62,27 @@ def insertar_materia_prima(nombre: str, unidad_base: str, unidad_consumo: str, f
 
     conn.commit()
     conn.close()
+
+
+def listar_materiales() -> list[Dict]:
+    """Realiza una consulta SQL para obtener el id y nombre de todas las materias primas disponibles en la tabla materia_prima
+
+    Returns:
+        list: Una lista de diccionarios con las claves 'id' y 'nombre' para cada materia prima.
+    """
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, nombre_insumo
+        FROM materia_prima
+        """
+    )
+
+    rows = cursor.fetchall()
+    
+    conn.close()
+
+    return [{"id": row["id"], "nombre": row["nombre_insumo"]} for row in rows]

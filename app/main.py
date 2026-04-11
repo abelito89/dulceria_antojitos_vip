@@ -2,12 +2,10 @@ from .infrastructure.db.db import init_db
 import flet as ft
 from .ui.ui import main as ui_main
 
-def main() -> None:
-    """Función principal que inicializa la base de datos y muestra un mensaje de confirmación.
-    """
+def main(page: ft.Page):
     init_db()
     print("Base de datos inicializada")
-    ft.run(ui_main, view=ft.AppView.WEB_BROWSER)
+    ui_main(page)  # reutilizas tu lógica actual
 
 if __name__ == "__main__":
-    main()
+    ft.run(main)

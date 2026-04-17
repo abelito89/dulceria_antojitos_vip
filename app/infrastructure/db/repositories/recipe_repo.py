@@ -1,4 +1,4 @@
-from ..db import get_connection
+from infrastructure.db.db import get_connection
 
 def get_receta(receta_id: int) -> dict | None:
     """

@@ -1,5 +1,5 @@
 import flet as ft
-from ..router import get_view_by_index
+from ui.router import get_view_by_index
 
 def create_app_layout(page: ft.Page) -> ft.Row:
     """Crea el layout principal de la aplicación con una barra de navegación lateral y un área de contenido.

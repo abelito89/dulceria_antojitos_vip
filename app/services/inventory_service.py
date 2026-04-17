@@ -1,4 +1,4 @@
-from ..infrastructure.db.repositories.lot_repo import crear_lote
+from infrastructure.db.repositories.lot_repo import crear_lote
 
 def agregar_lote_service(materia_prima_nombre_input: str, cantidad_inicial: float, precio_unitario: float, fecha_compra: str) -> None:
     """Ejecuta la función crear_lote() para agregar un nuevo lote a la base de datos con los datos proporcionados.

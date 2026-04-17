@@ -1,4 +1,4 @@
-from ..infrastructure.db.repositories.material_repo import insertar_materia_prima, listar_materiales
+from infrastructure.db.repositories.material_repo import insertar_materia_prima, listar_materiales
 
 def agregar_materia_prima_service(nombre: str, unidad_base: str, unidad_consumo: str, factor_conversion: float):
     """Ejecuta la funcion insertar_materia_prima() para agregar una nueva materia prima a la base de datos

@@ -1,11 +1,20 @@
-from .infrastructure.db.db import init_db
+from infrastructure.db.db import init_db
 import flet as ft
-from .ui.ui import main as ui_main
-
+from ui.ui import main as ui_main
 def main(page: ft.Page):
-    init_db()
-    print("Base de datos inicializada")
-    ui_main(page)  # reutilizas tu lógica actual
+    try:
+        init_db()
+        page.add(ft.Text("DB OK"))
+    except Exception as e:
+        page.add(ft.Text(f"ERROR INIT_DB: {e}"))
+        return
+
+    try:
+        ui_main(page)
+    except Exception as e:
+        page.add(ft.Text(f"ERROR UI: {e}"))
+
+
 
 if __name__ == "__main__":
     ft.run(main)

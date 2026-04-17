@@ -1,7 +1,7 @@
-from ..services.cost_service import calcular_costo_receta
-from .views.costos_view import costos_view
-from ..services.material_service import agregar_materia_prima_service
-from ..services.inventory_service import agregar_lote_service
+from services.cost_service import calcular_costo_receta
+from ui.views.costos_view import costos_view
+from services.material_service import agregar_materia_prima_service
+from services.inventory_service import agregar_lote_service
 
 
 def calcular_click(e,resultado_container,receta_dropdown,page) -> None:

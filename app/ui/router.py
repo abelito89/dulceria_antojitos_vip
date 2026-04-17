@@ -1,8 +1,8 @@
 import flet as ft
-from .views.costos_view import build_calculadora_view
-from .views.materiales_view import build_materiales_view
-from .views.compras_view import build_lot_view
-from .callbacks import calcular_click
+from ui.views.costos_view import build_calculadora_view
+from ui.views.materiales_view import build_materiales_view
+from ui.views.compras_view import build_lot_view
+from ui.callbacks import calcular_click
 
 def get_view_by_index(index: int, page: ft.Page) -> ft.Control:
     """Devuelve la vista correspondiente al índice seleccionado en la barra de navegación lateral.

@@ -1,5 +1,5 @@
 import flet as ft
-from .components.layout import create_app_layout
+from ui.components.layout import create_app_layout
 
 # ... tus otros imports
 

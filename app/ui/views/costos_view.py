@@ -1,5 +1,5 @@
 import flet as ft
-from ...services.recipe_service import listar_recetas
+from services.recipe_service import listar_recetas
 from typing import Callable, Dict, Any
 
 

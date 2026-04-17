@@ -1,5 +1,5 @@
 import flet as ft
-from ..callbacks import agregar_materia_prima_click
+from ui.callbacks import agregar_materia_prima_click
 
 def build_materiales_view(page: ft.Page):
     nombre_input = ft.TextField(label="Nombre de la materia prima")

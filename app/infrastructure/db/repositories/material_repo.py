@@ -1,4 +1,4 @@
-from ..db import get_connection
+from infrastructure.db.db import get_connection
 from typing import Dict
 
 def get_unidades_by_materia_prima(materia_prima_id: int) -> Dict:

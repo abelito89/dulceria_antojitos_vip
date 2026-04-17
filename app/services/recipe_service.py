@@ -1,4 +1,4 @@
-from ..infrastructure.db.repositories.recipe_repo import obtener_recetas
+from infrastructure.db.repositories.recipe_repo import obtener_recetas
 
 def listar_recetas() -> list:
     """Ejecuta la funcion obtener_recetas() y devuelve la lista retornada

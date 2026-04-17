@@ -1,4 +1,4 @@
-from ..db import get_connection
+from infrastructure.db.db import get_connection
 
 
 def get_max_price_available(materia_prima_id: int) -> float | None:

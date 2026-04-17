@@ -1,6 +1,6 @@
 import sqlite3
 from importlib import resources  # 👈 NUEVO
-from ...services.ruta_datos_app import get_app_data_path
+from services.ruta_datos_app import get_app_data_path
 
 
 DB_PATH = get_app_data_path() / "dulceria.db"
@@ -8,7 +8,7 @@ DB_PATH = get_app_data_path() / "dulceria.db"
 
 def load_schema_sql() -> str:
     """Carga el schema.sql desde el paquete (compatible con APK)."""
-    with resources.files("app.infraestructure.db").joinpath("schema.sql").open("r", encoding="utf-8") as f:
+    with resources.files("infrastructure.db").joinpath("schema.sql").open("r", encoding="utf-8") as f:
         return f.read()
 
 def get_connection() -> sqlite3.Connection:
@@ -36,6 +36,6 @@ def init_db() -> None:
 
     schema_sql = load_schema_sql()
     conn.executescript(schema_sql)
-
+    print("DB PATH:", DB_PATH)
     conn.commit()
     conn.close()

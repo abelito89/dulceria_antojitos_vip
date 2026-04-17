@@ -1,6 +1,6 @@
 import flet as ft
-from ..callbacks import agregar_lote_click
-from ...services.material_service import listar_materiales_service
+from ui.callbacks import agregar_lote_click
+from services.material_service import listar_materiales_service
 
 def build_lot_view(page:ft.Page):
 

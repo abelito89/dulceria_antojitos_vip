@@ -1,13 +1,13 @@
-from ..infrastructure.db.repositories.recipe_repo import (
+from infrastructure.db.repositories.recipe_repo import (
     get_receta,
     get_ingredientes_by_receta,
 )
 
-from ..infrastructure.db.repositories.lot_repo import (
+from infrastructure.db.repositories.lot_repo import (
     get_max_price_available,
 )
-from ..services.unit_service import consumo_a_base
-from ..infrastructure.db.repositories.material_repo import (
+from services.unit_service import consumo_a_base
+from infrastructure.db.repositories.material_repo import (
     get_unidades_by_materia_prima,
 )
 from typing import Dict, Any

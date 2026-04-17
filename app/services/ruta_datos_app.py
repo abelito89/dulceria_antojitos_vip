@@ -1,12 +1,20 @@
+import appdirs
 from pathlib import Path
-def get_app_data_path() -> Path:
-    """Devuelve una ruta escribible para la app.
-    En escritorio: carpeta local 'data'.
-    En futuro móvil: se puede adaptar sin romper nada.
 
-    Returns:
-        Path: La ruta escribible para la app.
+def get_app_data_path() -> Path:
     """
-    base_path = Path.cwd() / "data"
-    base_path.mkdir(parents=True, exist_ok=True)
-    return base_path
+    Retorna la ruta de datos de la aplicación, compatible con desktop y Android.
+    
+    Usa `appdirs` que automáticamente retorna:
+    - Windows: C:\\Users\\<user>\\AppData\\Local\\Dulceria
+    - Linux:   ~/.local/share/dulceria
+    - macOS:   ~/Library/Application Support/Dulceria
+    - Android: Maneja automáticamente el directorio seguro de Flet
+    
+    Returns:
+        Path: Ruta absoluta para almacenar datos (creada si no existe).
+    """
+    app_data = appdirs.user_data_dir("Dulceria")
+    data_dir = Path(app_data)
+    data_dir.mkdir(parents=True, exist_ok=True)
+    return data_dir

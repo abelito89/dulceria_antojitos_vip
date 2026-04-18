@@ -8,14 +8,16 @@ import os
 
 
 def get_base_path() -> Path:
-    if "ANDROID_ARGUMENT" in os.environ:
-        base = Path("/data/user/0/com.flet.app/files")
-    elif sys.platform == "win32":
-        base = Path(os.getenv("LOCALAPPDATA", Path.home()))
-    else:
-        base = Path.home() / ".local" / "share"
+    # Android (Flet APK siempre cae aquí)
+    if sys.platform.startswith("linux") and Path("/data/user/0").exists():
+        return Path("/data/user/0/com.flet.app/files")
 
-    return base
+    # Windows
+    if sys.platform == "win32":
+        return Path.home() / "AppData" / "Local"
+
+    # Linux/macOS
+    return Path.home() / ".local" / "share"
 
 def main(page: ft.Page):
     try:

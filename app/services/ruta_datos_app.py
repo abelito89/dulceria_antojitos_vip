@@ -1,20 +1,16 @@
-import appdirs
 from pathlib import Path
+import os
+
 
 def get_app_data_path() -> Path:
-    """
-    Retorna la ruta de datos de la aplicación, compatible con desktop y Android.
-    
-    Usa `appdirs` que automáticamente retorna:
-    - Windows: C:\\Users\\<user>\\AppData\\Local\\Dulceria
-    - Linux:   ~/.local/share/dulceria
-    - macOS:   ~/Library/Application Support/Dulceria
-    - Android: Maneja automáticamente el directorio seguro de Flet
-    
-    Returns:
-        Path: Ruta absoluta para almacenar datos (creada si no existe).
-    """
-    app_data = appdirs.user_data_dir("Dulceria")
-    data_dir = Path(app_data)
+    android_path = Path("/data/user/0/com.flet.app/files")
+
+    if android_path.exists():
+        base_path = android_path
+    else:
+        base_path = Path.home() / ".dulceria"
+
+    data_dir = base_path / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
+
     return data_dir

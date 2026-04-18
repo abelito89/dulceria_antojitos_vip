@@ -1,10 +1,15 @@
 import sqlite3
-from importlib import resources  # 👈 NUEVO
-from services.ruta_datos_app import get_app_data_path
+from importlib import resources
+from pathlib import Path
 
 
-DB_PATH = get_app_data_path() / "dulceria.db"
+DB_PATH: Path | None = None
 
+
+
+def set_db_path(base_path: Path):
+    global DB_PATH
+    DB_PATH = base_path / "dulceria.db"
 
 def load_schema_sql() -> str:
     """Carga el schema.sql desde el paquete (compatible con APK)."""
@@ -12,30 +17,28 @@ def load_schema_sql() -> str:
         return f.read()
 
 def get_connection() -> sqlite3.Connection:
-    """Crea una conexión a la base de datos SQLite y activa las claves foráneas.
+    if DB_PATH is None:
+        raise RuntimeError("DB_PATH no inicializado. Llama a set_db_path() primero.")
 
-    Returns:
-        sqlite3.Connection: Una conexión a la base de datos SQLite con claves foráneas activadas.
-    """
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)  # 👈 NUEVO
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-
-    # IMPORTANTE: activar claves foráneas
     conn.execute("PRAGMA foreign_keys = ON;")
 
     return conn
 
 
 def init_db() -> None:
-    """Inicializa la base de datos SOLO si no existe."""
-    if DB_PATH.exists():
-        return
+    if DB_PATH is None:
+        raise RuntimeError("DB_PATH no inicializado. Llama a set_db_path() primero.")
 
     conn = get_connection()
 
     schema_sql = load_schema_sql()
     conn.executescript(schema_sql)
+
     print("DB PATH:", DB_PATH)
+
     conn.commit()
     conn.close()

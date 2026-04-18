@@ -14,6 +14,6 @@ def main(page: ft.Page) -> None:
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.add(create_app_layout(page))
 
-ft.app(target=main)
+# ft.app(target=main)
 
 

@@ -68,3 +68,49 @@ def obtener_recetas() -> list:
     conn.close()
 
     return [{"id": row["id"], "nombre": row["nombre_producto"]} for row in rows]
+
+
+def agregar_receta(nombre_producto: str, rendimiento: int) -> int | None:
+    """Agrega una nueva receta a la tabla receta
+
+    Args:
+        nombre_producto (str): El nombre del producto a agregar.
+        rendimiento (int): Unidades que produce la receta.
+
+    Returns:
+        int | None: El ID de la receta agregada o None si no se pudo agregar.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO receta (nombre_producto, rendimiento) VALUES (?, ?)",
+        (nombre_producto, rendimiento)
+    )
+
+    conn.commit()
+    receta_id = cursor.lastrowid
+    conn.close()
+    return receta_id
+
+def agregar_ingrediente_a_receta(receta_id: int, materia_prima_id: int, cantidad: float) -> None:
+    """Agrega un ingrediente a una receta en la tabla receta_ingrediente
+
+    Args:
+        receta_id (int): El ID de la receta a la que se le agregará el ingrediente.
+        materia_prima_id (int): El ID de la materia prima que se agregará como ingrediente.
+        cantidad (float): La cantidad de la materia prima que se usará en la receta.
+
+    Returns:
+        None
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO receta_ingrediente (receta_id, materia_prima_id, cantidad) VALUES (?, ?, ?)",
+        (receta_id, materia_prima_id, cantidad)
+    )
+
+    conn.commit()
+    conn.close()

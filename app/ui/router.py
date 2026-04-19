@@ -2,6 +2,7 @@ import flet as ft
 from ui.views.costos_view import build_calculadora_view
 from ui.views.materiales_view import build_materiales_view
 from ui.views.compras_view import build_lot_view
+from ui.views.recetas_view import build_recetas_view
 from ui.callbacks import calcular_click
 
 def get_view_by_index(index: int, page: ft.Page) -> ft.Control:
@@ -18,7 +19,9 @@ def get_view_by_index(index: int, page: ft.Page) -> ft.Control:
     views = {
         0: lambda: build_calculadora_view(page, calcular_click),
         1: lambda: build_materiales_view(page),
-        2: lambda: build_lot_view(page)
+        2: lambda: build_lot_view(page),
+        3: lambda: build_recetas_view(page)
+
 
     }
     return views.get(index, lambda: ft.Text("Vista no encontrada"))()

@@ -4,7 +4,6 @@ from ui.ui import main as ui_main
 from infrastructure.db.db import set_db_path
 from pathlib import Path
 import sys
-import os
 
 
 def get_base_path() -> Path:

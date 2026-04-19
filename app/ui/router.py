@@ -21,7 +21,5 @@ def get_view_by_index(index: int, page: ft.Page) -> ft.Control:
         1: lambda: build_materiales_view(page),
         2: lambda: build_lot_view(page),
         3: lambda: build_recetas_view(page)
-
-
     }
     return views.get(index, lambda: ft.Text("Vista no encontrada"))()

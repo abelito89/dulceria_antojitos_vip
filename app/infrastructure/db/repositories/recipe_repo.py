@@ -1,4 +1,5 @@
 from infrastructure.db.db import get_connection
+import sqlite3
 
 def get_receta(receta_id: int) -> dict | None:
     """
@@ -83,15 +84,20 @@ def agregar_receta(nombre_producto: str, rendimiento: int) -> int | None:
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "INSERT INTO receta (nombre_producto, rendimiento) VALUES (?, ?)",
-        (nombre_producto, rendimiento)
-    )
+    try:
+        cursor.execute(
+            "INSERT INTO receta (nombre_producto, rendimiento) VALUES (?, ?)",
+            (nombre_producto, rendimiento)
+        )
+        conn.commit()
 
-    conn.commit()
-    receta_id = cursor.lastrowid
-    conn.close()
-    return receta_id
+    except sqlite3.IntegrityError as e:
+        raise ValueError("Ya existe un registro con ese nombre") from e
+
+    finally:
+        conn.close()
+
+    return cursor.lastrowid
 
 def agregar_ingrediente_a_receta(receta_id: int, materia_prima_id: int, cantidad: float) -> None:
     """Agrega un ingrediente a una receta en la tabla receta_ingrediente

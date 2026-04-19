@@ -37,11 +37,10 @@ def build_recetas_view(page: ft.Page):
             resultado,
             page        
         )
-        print(receta_id)
-        print(f"receta_id: {receta_id}")
-        print(f"materia_prima_input: {materia_prima_input}")
-        print(f"cantidad_input: {cantidad_input}")
-        print(f"resultado: {resultado}")
+        materia_prima_input.value = None
+        cantidad_input.value = ""
+        page.update()
+        
 
     def on_guardar(e):
         receta_id = agregar_receta_click(

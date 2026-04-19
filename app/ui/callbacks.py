@@ -36,32 +36,54 @@ def calcular_click(e,resultado_container,receta_dropdown,page) -> None:
     page.update()
 
 
-def agregar_materia_prima_click(e, nombre_input, unidad_base_input, unidad_consumo_input, factor_input, resultado,page) -> None:
-    """Callback para que al presionar el boton guardar en la UI se ejecute el insert en db
+def agregar_materia_prima_click(
+    e: ft.Event,
+    nombre_input: ft.TextField,
+    unidad_base_input: ft.TextField,
+    unidad_consumo_input: ft.TextField,
+    factor_input: ft.TextField,
+    resultado: ft.Text,
+    page: ft.Page
+) -> None:
+    """Maneja el evento de agregar una nueva materia prima desde la UI.
+
+    Toma los valores de los campos, ejecuta la inserción en la base de datos
+    y muestra el resultado al usuario. Limpia los campos tras una operación exitosa.
 
     Args:
-        e (_type_): Evento de clic del botón de guardar
-        nombre_input (_type_): Nombre de la materia prima
-        unidad_base_input (_type_): Unidad de medida en la que se adquiere la materia prima
-        unidad_consumo_input (_type_): Unidad de medida en la que se consume la materia prima en las recetas 
-        factor_input (_type_): Factor de conversion entre unidades base y de consumo
-        resultado (_type_): Contenedor donde se mostrará el resultado de la operación
-        page (_type_): Página de Flet para actualizar la UI después de mostrar el resultado
+        e: Evento de clic del botón.
+        nombre_input: Campo de texto con el nombre de la materia prima.
+        unidad_base_input: Unidad en la que se adquiere la materia prima.
+        unidad_consumo_input: Unidad en la que se consume en recetas.
+        factor_input: Factor de conversión entre unidades.
+        resultado: Control de texto donde se muestra el resultado.
+        page: Página de Flet para actualizar la UI.
     """
     try:
         agregar_materia_prima_service(
             nombre_input.value,
             unidad_base_input.value,
             unidad_consumo_input.value,
-            float(factor_input.value) if factor_input.value else 1
+            float(factor_input.value) if factor_input.value else 1.0
         )
-        resultado.value = "Materia prima agregada correctamente"
-        
-    
-    except Exception as ex:
-        resultado.value = "Error: " + str(ex)
-    page.update()
 
+        resultado.value = "Materia prima agregada correctamente"
+        resultado.color = "green"
+
+        # Limpiar campos
+        nombre_input.value = ""
+        unidad_base_input.value = ""
+        unidad_consumo_input.value = ""
+        factor_input.value = ""
+
+
+    except Exception as ex:
+        print("TIPO ERROR:", type(ex))
+        print("ERROR:", ex)
+        resultado.value = f"Error: {ex}"
+        resultado.color = "red"
+
+    page.update()
 
 def agregar_lote_click(e,materia_prima_nombre_input, cantidad_inicial_input, precio_unitario_input, fecha_compra_input,page) -> None:
     """Construye la vista de compras, que permite al usuario agregar un nuevo lote a la base de datos.
@@ -127,12 +149,16 @@ def agregar_receta_click(
             nombre_producto_input.value,
             int(rendimiento_input.value)
         )
+        nombre_producto_input.value = ""
+        rendimiento_input.value = ""
 
         resultado.value = f"Receta agregada correctamente con ID: {receta_id}"
+        resultado.color = "green"
         return receta_id
 
     except Exception as ex:
         resultado.value = f"Error: {ex}"
+        resultado.color = "red"
         return None
 
     finally:
@@ -188,6 +214,7 @@ def agregar_ingrediente_click(
         )
 
         resultado.value = "Ingrediente agregado correctamente"
+        resultado.color = "green"
 
     except Exception as ex:
         resultado.value = f"Error: {ex}"

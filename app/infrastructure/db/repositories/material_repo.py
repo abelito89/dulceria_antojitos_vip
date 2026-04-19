@@ -1,5 +1,6 @@
 from infrastructure.db.db import get_connection
 from typing import Dict
+import sqlite3
 
 def get_unidades_by_materia_prima(materia_prima_id: int) -> Dict:
     """Realiza consulta SQL para obtener la unidad base, unidad de consumo y factor de conversión
@@ -51,17 +52,20 @@ def insertar_materia_prima(nombre: str, unidad_base: str, unidad_consumo: str, f
 
     conn = get_connection()
     cursor = conn.cursor()
+    try:
+        cursor.execute(
+            """
+            INSERT INTO materia_prima (nombre_insumo, unidad_base, unidad_consumo, factor_conversion)
+            VALUES (?, ?, ?, ?)
+            """,
+            (nombre, unidad_base, unidad_consumo, factor_conversion)
+        )
+        conn.commit()
+    except sqlite3.IntegrityError as ex:
+        raise ValueError("Ya existe una materia prima con ese nombre") from ex
 
-    cursor.execute(
-        """
-        INSERT INTO materia_prima (nombre_insumo, unidad_base, unidad_consumo, factor_conversion)
-        VALUES (?, ?, ?, ?)
-        """,
-        (nombre, unidad_base, unidad_consumo, factor_conversion)
-    )
-
-    conn.commit()
-    conn.close()
+    finally:
+        conn.close()
 
 
 def listar_materiales() -> list[Dict]:

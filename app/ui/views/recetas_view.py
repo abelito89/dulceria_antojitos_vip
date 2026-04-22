@@ -1,16 +1,25 @@
 import flet as ft
 
 class RecetaState:
+    """Estado global de la receta actual en edición o visualización."""
     def __init__(self):
+        """Inicializa el estado con una receta no seleccionada."""
         self.receta_id: int = -1
 
 
-def build_ingredientes_section(
-    materia_prima_input,
-    cantidad_input,
-    btn_add,
-    btn_confirmar
-):
+def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn_confirmar):
+    """
+    Construye la sección de UI para agregar ingredientes a una receta.
+
+    Args:
+        materia_prima_input: Campo de entrada para seleccionar la materia prima.
+        cantidad_input: Campo de entrada para la cantidad del ingrediente.
+        btn_add: Botón para añadir el ingrediente.
+        btn_confirmar: Botón para confirmar la lista de ingredientes.
+
+    Returns:
+        ft.Column: Contenedor con los controles de ingredientes.
+    """
     return ft.Column(
         [
             ft.Text("Agregar ingredientes a la receta"),
@@ -22,12 +31,19 @@ def build_ingredientes_section(
         visible=True
     )
 
-def build_receta_form(
-    nombre_input,
-    rendimiento_input,
-    boton,
-    resultado
-):
+def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
+    """
+    Construye el formulario de creación de una receta.
+
+    Args:
+        nombre_input: Campo de entrada para el nombre de la receta.
+        rendimiento_input: Campo de entrada para el rendimiento de la receta.
+        boton: Botón de acción para guardar o crear la receta.
+        resultado: Control donde se muestra el resultado o feedback de la operación.
+
+    Returns:
+        ft.Column: Contenedor con los controles del formulario de receta.
+    """
     return ft.Column(
         [
             ft.Text("Agregar nueva receta"),
@@ -41,6 +57,21 @@ def build_receta_form(
     )
 
 def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agregar_ingrediente_cb):
+    """
+    Construye la vista principal de gestión de recetas.
+
+    Permite crear una receta, agregar ingredientes asociados a ella y
+    gestionar su estado de edición dentro de la UI.
+
+    Args:
+        page (ft.Page): Página principal de Flet para actualización de UI.
+        lista_materiales (list): Lista de materias primas disponibles para selección.
+        agregar_receta_cb (callable): Callback para persistir una nueva receta.
+        agregar_ingrediente_cb (callable): Callback para añadir ingredientes a una receta existente.
+
+    Returns:
+        ft.Column: Vista completa de creación y edición de recetas.
+    """
     state = RecetaState()
     nombre_input = ft.TextField(label="Nombre del producto")
     rendimiento_input = ft.TextField(label="Rendimiento (unidades que produce la receta)")
@@ -111,8 +142,8 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
                 state.receta_id = receta_id
                 ingredientes_container.visible = True
                 btn_add.disabled = False
-                btn_confirmar.disabled = False
-                boton.disabled = True  # 🔴 bloquea nuevas recetas
+                boton_confirmar_receta.disabled = False
+                boton_guardar.disabled = True  # 🔴 bloquea nuevas recetas
 
         except Exception as ex:
             resultado.value = f"Error al guardar: {str(ex)}"
@@ -120,6 +151,12 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         page.update()
 
     def on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, btn_add, btn_confirmar, boton, page):
+        """
+        Confirma la receta actual y resetea el estado de creación.
+
+        Limpia los campos del formulario, deshabilita los controles de
+        ingredientes y restablece el estado interno de la receta.
+        """
         # Reset estado
         state.receta_id = -1
 
@@ -138,27 +175,27 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
 
         page.update()
         
-    btn_add = ft.ElevatedButton(
+    boton_agregar_ingrediente = ft.ElevatedButton(
         "Agregar ingrediente",
         on_click=lambda e: on_agregar_ingrediente(e, state, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb),
         disabled=True
     )
 
-    btn_confirmar = ft.ElevatedButton(
+    boton_confirmar_receta = ft.ElevatedButton(
         "Confirmar receta",
         disabled=True
     )
-    btn_confirmar.on_click = lambda e: on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, btn_add, btn_confirmar, boton, page)
+    boton_confirmar_receta.on_click = lambda e: on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, boton_agregar_ingrediente, boton_confirmar_receta, boton_guardar, page)
 
     ingredientes_container = build_ingredientes_section(
         materia_prima_input,
         cantidad_input,
-        btn_add,
-        btn_confirmar
+        boton_agregar_ingrediente,
+        boton_confirmar_receta
     )
-    boton = ft.ElevatedButton(
+    boton_guardar = ft.ElevatedButton(
         "Guardar",
-        on_click=lambda e: on_guardar(e, state, nombre_input, rendimiento_input, resultado, page, ingredientes_container, btn_add, agregar_receta_cb)
+        on_click=lambda e: on_guardar(e, state, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb)
     )
 
     return ft.Column(
@@ -166,7 +203,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             build_receta_form(
                 nombre_input,
                 rendimiento_input,
-                boton,
+                boton_guardar,
                 resultado
             ),
             ingredientes_container

@@ -4,6 +4,42 @@ class RecetaState:
     def __init__(self):
         self.receta_id: int = -1
 
+
+def build_ingredientes_section(
+    materia_prima_input,
+    cantidad_input,
+    btn_add,
+    btn_confirmar
+):
+    return ft.Column(
+        [
+            ft.Text("Agregar ingredientes a la receta"),
+            materia_prima_input,
+            cantidad_input,
+            btn_add,
+            btn_confirmar
+        ],
+        visible=True
+    )
+
+def build_receta_form(
+    nombre_input,
+    rendimiento_input,
+    boton,
+    resultado
+):
+    return ft.Column(
+        [
+            ft.Text("Agregar nueva receta"),
+            nombre_input,
+            rendimiento_input,
+            boton,
+            resultado,
+            ft.Divider()
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
 def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agregar_ingrediente_cb):
     state = RecetaState()
     nombre_input = ft.TextField(label="Nombre del producto")
@@ -114,14 +150,12 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     )
     btn_confirmar.on_click = lambda e: on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, btn_add, btn_confirmar, boton, page)
 
-    ingredientes_container.controls = [
-        ft.Text("Agregar ingredientes a la receta"),
+    ingredientes_container = build_ingredientes_section(
         materia_prima_input,
         cantidad_input,
         btn_add,
         btn_confirmar
-    ]
-
+    )
     boton = ft.ElevatedButton(
         "Guardar",
         on_click=lambda e: on_guardar(e, state, nombre_input, rendimiento_input, resultado, page, ingredientes_container, btn_add, agregar_receta_cb)
@@ -129,13 +163,13 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
 
     return ft.Column(
         [
-            ft.Text("Agregar nueva receta"),
-            nombre_input,
-            rendimiento_input,
-            boton,
-            resultado,
-            ft.Divider(),  # línea visual
-            ingredientes_container 
+            build_receta_form(
+                nombre_input,
+                rendimiento_input,
+                boton,
+                resultado
+            ),
+            ingredientes_container
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         alignment=ft.MainAxisAlignment.CENTER

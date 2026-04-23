@@ -1,10 +1,7 @@
 import flet as ft
+from state.receta_context import get_receta_activa, set_receta_activa, clear_receta_activa
 
-class RecetaState:
-    """Estado global de la receta actual en edición o visualización."""
-    def __init__(self):
-        """Inicializa el estado con una receta no seleccionada."""
-        self.receta_id: int = -1
+
 
 
 def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn_confirmar):
@@ -72,14 +69,13 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     Returns:
         ft.Column: Vista completa de creación y edición de recetas.
     """
-    state = RecetaState()
     nombre_input = ft.TextField(label="Nombre del producto")
     rendimiento_input = ft.TextField(label="Rendimiento (unidades que produce la receta)")
 
     resultado = ft.Text()
     ingredientes_container = ft.Column(visible=True)
     materia_prima_input = ft.Dropdown(
-        label="Selecciona un ingrediente (materia prima)",
+        label="Ingrediente",
         width=250,
         options=[
             ft.dropdown.Option(
@@ -91,12 +87,13 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     )
     cantidad_input = ft.TextField(label="Cantidad")
     
-    def on_agregar_ingrediente(e, state, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb):
+    def on_agregar_ingrediente(e, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb):
         """Maneja el evento de agregar ingrediente a la receta. Valida los campos y llama al callback para agregar el ingrediente.
          Requiere que la receta ya haya sido guardada para tener un ID válido.
         """
+        receta_id = get_receta_activa(page)
         try:
-            if state.receta_id == -1:
+            if not receta_id:
                 resultado.value = "Primero debes guardar la receta"
                 page.update()
                 return
@@ -110,7 +107,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
                 resultado.value = "Cantidad inválida"
                 page.update()
                 return
-            receta_id = state.receta_id
+        
 
             agregar_ingrediente_cb(e, receta_id, materia_prima_input.value, cantidad_input.value, resultado, page)
 
@@ -121,7 +118,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             resultado.value = f"Error al agregar ingrediente: {str(ex)}"
             page.update()
         
-    def on_guardar(e, state, nombre_input, rendimiento_input, resultado, page, ingredientes_container, btn_add, agregar_receta_cb):
+    def on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, btn_add, agregar_receta_cb):
         """Maneja el evento de guardar la receta. Valida los campos, llama al callback para agregar 
         la receta y actualiza el estado para permitir agregar ingredientes.
         """
@@ -139,7 +136,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             receta_id = agregar_receta_cb(e, nombre_input, rendimiento_input, resultado, page)
 
             if receta_id:
-                state.receta_id = receta_id
+                set_receta_activa(page, receta_id)
                 ingredientes_container.visible = True
                 btn_add.disabled = False
                 boton_confirmar_receta.disabled = False
@@ -150,7 +147,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
 
         page.update()
 
-    def on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, btn_add, btn_confirmar, boton, page):
+    def on_confirmar(e, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, btn_add, btn_confirmar, boton, page):
         """
         Confirma la receta actual y resetea el estado de creación.
 
@@ -158,7 +155,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         ingredientes y restablece el estado interno de la receta.
         """
         # Reset estado
-        state.receta_id = -1
+        clear_receta_activa(page)
 
         # Limpiar inputs
         nombre_input.value = ""
@@ -177,7 +174,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         
     boton_agregar_ingrediente = ft.ElevatedButton(
         "Agregar ingrediente",
-        on_click=lambda e: on_agregar_ingrediente(e, state, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb),
+        on_click=lambda e: on_agregar_ingrediente(e, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb),
         disabled=True
     )
 
@@ -185,7 +182,9 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         "Confirmar receta",
         disabled=True
     )
-    boton_confirmar_receta.on_click = lambda e: on_confirmar(e, state, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, boton_agregar_ingrediente, boton_confirmar_receta, boton_guardar, page)
+
+
+    boton_confirmar_receta.on_click = lambda e: on_confirmar(e, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, boton_agregar_ingrediente, boton_confirmar_receta, boton_guardar, page)
 
     ingredientes_container = build_ingredientes_section(
         materia_prima_input,
@@ -195,8 +194,14 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     )
     boton_guardar = ft.ElevatedButton(
         "Guardar",
-        on_click=lambda e: on_guardar(e, state, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb)
+        on_click=lambda e: on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb)
     )
+    receta_id = get_receta_activa(page)
+
+    if receta_id:
+        boton_agregar_ingrediente.disabled = False
+        boton_confirmar_receta.disabled = False
+        boton_guardar.disabled = True
 
     return ft.Column(
         [

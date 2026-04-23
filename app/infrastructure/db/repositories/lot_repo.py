@@ -51,8 +51,6 @@ def crear_lote(materia_prima_nombre_input: str, cantidad_inicial: float, precio_
 
     conn = get_connection()
     cursor = conn.cursor()
-    
-
     cursor.execute(
         """
         INSERT INTO lotes (
@@ -72,7 +70,6 @@ def crear_lote(materia_prima_nombre_input: str, cantidad_inicial: float, precio_
             fecha_compra
         )
     )
-
-
     conn.commit()
+
     conn.close()

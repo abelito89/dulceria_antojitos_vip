@@ -3,6 +3,7 @@ from ui.views.costos_view import costos_view
 from services.material_service import agregar_materia_prima_service
 from services.inventory_service import agregar_lote_service
 from services.recipe_service import agregar_nueva_receta, agregar_ingrediente
+from state.receta_context import set_receta_activa
 import flet as ft
 
 
@@ -149,6 +150,7 @@ def agregar_receta_click(
             nombre_producto_input.value,
             int(rendimiento_input.value)
         )
+        set_receta_activa(page, receta_id)
         nombre_producto_input.value = ""
         rendimiento_input.value = ""
 

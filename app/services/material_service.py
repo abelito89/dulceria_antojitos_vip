@@ -1,4 +1,5 @@
 from infrastructure.db.repositories.material_repo import insertar_materia_prima, listar_materiales
+from typing import Optional
 
 def agregar_materia_prima_service(nombre: str, unidad_base: str, unidad_consumo: str, factor_conversion: float):
     """Ejecuta la funcion insertar_materia_prima() para agregar una nueva materia prima a la base de datos
@@ -44,3 +45,16 @@ def buscar_materia_prima_service(material: str) -> list:
     """
     materiales = listar_materiales()
     return [m for m in materiales if material.lower() in m["nombre"].lower()]
+
+
+
+
+class AppState:
+    selected_materia_prima: Optional[dict] = None
+
+state = AppState()
+
+def seleccionar_materia_prima_service(materia: dict):
+    """Selecciona una materia prima y la almacena en el estado global para su uso posterior."""
+    state.selected_materia_prima = materia
+

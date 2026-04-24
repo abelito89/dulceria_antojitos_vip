@@ -1,9 +1,10 @@
 from services.cost_service import calcular_costo_receta
 from ui.views.costos_view import costos_view
-from services.material_service import agregar_materia_prima_service, buscar_materia_prima_service
+from services.material_service import agregar_materia_prima_service, buscar_materia_prima_service, seleccionar_materia_prima_service
 from services.inventory_service import agregar_lote_service
 from services.recipe_service import agregar_nueva_receta, agregar_ingrediente
 from state.receta_context import set_receta_activa
+from ui.components.crear_item_materia_prima import crear_item_materia_prima
 import flet as ft
 
 
@@ -224,35 +225,48 @@ def agregar_ingrediente_click(
     page.update()
 
 
+
+
 def buscar_materia_prima_click(
     e: ft.Event,
     search_input: ft.TextField,
     lista: ft.Column,
     resultado: ft.Text,
-    page: ft.Page
+    page: ft.Page,
+    on_select_fn: callable
 ):
-    """Callback para manejar la búsqueda de materias primas desde la UI.
-
-    Esta función se ejecuta cuando el usuario ingresa texto en el campo de búsqueda
-    y actualiza la lista de materias primas mostrada en la interfaz según el término
-    ingresado.
-
-    Args:
-        e: Evento de cambio en el campo de búsqueda.
-        search_input: Campo de texto donde el usuario ingresa el término de búsqueda.
-        lista: Control de lista que muestra las materias primas filtradas.
-        resultado: Control de texto donde se mostrará el mensaje al usuario.
-        page: Página de Flet para actualizar la UI después de filtrar los resultados.
-
-    Returns:
-        None
-    """
+    """Callback para manejar la búsqueda de materias primas desde la UI."""
     lista_encontrada = buscar_materia_prima_service(search_input.value)
+    
     if lista_encontrada:
-        lista.controls = [ft.Text(m["nombre"]) for m in lista_encontrada]
+        # El callback delega la creación visual al componente dedicado
+        lista.controls = [crear_item_materia_prima(m,on_select_fn) for m in lista_encontrada]
         resultado.value = f"{len(lista_encontrada)} materia(s) prima(s) encontrada(s)"
         resultado.color = "green"
     else:
         lista.controls = []
         resultado.value = "No se encontraron materias primas que coincidan con la búsqueda."
         resultado.color = "red"
+        
+    # Recomendación Flet: Actualizar explícitamente los controles mutados
+    lista.update()
+    resultado.update()
+
+
+def seleccionar_materia_prima_click(materia: dict, detalle_container: ft.Column, page: ft.Page):
+    # 1. Guardamos en el estado global (tu servicio actual)
+    seleccionar_materia_prima_service(materia)
+    
+    # 2. Construimos la UI con todos los atributos
+    detalle_container.controls = [
+        ft.Text("Detalles del Material", size=20),
+        ft.Text(f"ID: {materia.get('id', 'N/A')}"),
+        ft.Text(f"Nombre: {materia.get('nombre', 'N/A')}")
+        # Agrega aquí cualquier otro atributo que tenga tu diccionario materia
+    ]
+    
+    # 3. Refrescamos la pantalla
+    detalle_container.update()
+
+
+

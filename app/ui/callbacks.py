@@ -261,8 +261,11 @@ def seleccionar_materia_prima_click(materia: dict, detalle_container: ft.Column,
     detalle_container.controls = [
         ft.Text("Detalles del Material", size=20),
         ft.Text(f"ID: {materia.get('id', 'N/A')}"),
-        ft.Text(f"Nombre: {materia.get('nombre', 'N/A')}")
-        # Agrega aquí cualquier otro atributo que tenga tu diccionario materia
+        ft.Text(f"Nombre: {materia.get('nombre', 'N/A')}"),
+        ft.Text(f"Unidad Base: {materia.get('unidad_base', 'N/A')}"),
+        ft.Text(f"Unidad Consumo: {materia.get('unidad_consumo', 'N/A')}"),
+        ft.Text(f"Factor de Conversión: {materia.get('factor_conversion', 'N/A')}")
+        
     ]
     
     # 3. Refrescamos la pantalla

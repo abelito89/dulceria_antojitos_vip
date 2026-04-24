@@ -81,7 +81,7 @@ def listar_materiales() -> list[Dict]:
 
     cursor.execute(
         """
-        SELECT id, nombre_insumo
+        SELECT id, nombre_insumo, unidad_base, unidad_consumo, factor_conversion
         FROM materia_prima
         """
     )
@@ -90,4 +90,4 @@ def listar_materiales() -> list[Dict]:
     print(">>> LISTAR MATERIALES FIN")
     conn.close()
 
-    return [{"id": row["id"], "nombre": row["nombre_insumo"]} for row in rows]
+    return [{"id": row["id"], "nombre": row["nombre_insumo"], "unidad_base": row["unidad_base"], "unidad_consumo": row["unidad_consumo"], "factor_conversion": row["factor_conversion"]} for row in rows]

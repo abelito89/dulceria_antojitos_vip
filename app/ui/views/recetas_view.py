@@ -19,11 +19,11 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
     """
     return ft.Column(
         [
-            ft.Text("Agregar ingredientes a la receta"),
-            materia_prima_input,
-            cantidad_input,
-            btn_add,
-            btn_confirmar
+        ft.Text("Agregar ingredientes a la receta"),
+        materia_prima_input,
+        cantidad_input,
+        btn_add,
+        btn_confirmar
         ],
         visible=True
     )

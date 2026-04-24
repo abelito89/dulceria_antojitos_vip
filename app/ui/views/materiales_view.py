@@ -1,5 +1,5 @@
 import flet as ft
-from ui.callbacks import agregar_materia_prima_click
+from ui.callbacks import agregar_materia_prima_click, buscar_materia_prima_click
 
 def build_materiales_view(page: ft.Page):
     nombre_input = ft.TextField(label="Nombre de la materia prima")
@@ -26,7 +26,29 @@ def build_materiales_view(page: ft.Page):
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         alignment=ft.MainAxisAlignment.CENTER
     )
-        
+
+
+
+def build_consultar_materiales_view(page: ft.Page):
+    search_input = ft.TextField(label="Buscar materia prima")
+
+    lista = ft.Column()
+
+    resultado = ft.Text()
+
+    search_input.on_change = lambda e: buscar_materia_prima_click(e, search_input, lista, resultado, page)
+
+    return ft.Column(
+        [
+            ft.Text("Consultar materias primas"),
+            search_input,
+            lista,
+            resultado
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.CENTER,
+        expand=True
+    )
 
 
     

@@ -1,6 +1,6 @@
 from services.cost_service import calcular_costo_receta
 from ui.views.costos_view import costos_view
-from services.material_service import agregar_materia_prima_service
+from services.material_service import agregar_materia_prima_service, buscar_materia_prima_service
 from services.inventory_service import agregar_lote_service
 from services.recipe_service import agregar_nueva_receta, agregar_ingrediente
 from state.receta_context import set_receta_activa
@@ -222,3 +222,37 @@ def agregar_ingrediente_click(
         resultado.value = f"Error: {ex}"
 
     page.update()
+
+
+def buscar_materia_prima_click(
+    e: ft.Event,
+    search_input: ft.TextField,
+    lista: ft.Column,
+    resultado: ft.Text,
+    page: ft.Page
+):
+    """Callback para manejar la búsqueda de materias primas desde la UI.
+
+    Esta función se ejecuta cuando el usuario ingresa texto en el campo de búsqueda
+    y actualiza la lista de materias primas mostrada en la interfaz según el término
+    ingresado.
+
+    Args:
+        e: Evento de cambio en el campo de búsqueda.
+        search_input: Campo de texto donde el usuario ingresa el término de búsqueda.
+        lista: Control de lista que muestra las materias primas filtradas.
+        resultado: Control de texto donde se mostrará el mensaje al usuario.
+        page: Página de Flet para actualizar la UI después de filtrar los resultados.
+
+    Returns:
+        None
+    """
+    lista_encontrada = buscar_materia_prima_service(search_input.value)
+    if lista_encontrada:
+        lista.controls = [ft.Text(m["nombre"]) for m in lista_encontrada]
+        resultado.value = f"{len(lista_encontrada)} materia(s) prima(s) encontrada(s)"
+        resultado.color = "green"
+    else:
+        lista.controls = []
+        resultado.value = "No se encontraron materias primas que coincidan con la búsqueda."
+        resultado.color = "red"

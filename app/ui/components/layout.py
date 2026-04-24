@@ -28,10 +28,11 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         label_type=ft.NavigationRailLabelType.ALL,
         min_width=100,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.Icons.CALCULATE, label="Calculadora"),
-            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Materias primas"),
+            ft.NavigationRailDestination(icon=ft.Icons.CALCULATE, label="Calculadora de costos"),
+            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Agregar materias primas"),
+            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Consultar materias primas"),
             ft.NavigationRailDestination(icon=ft.Icons.SHOPPING_CART, label="Compras"),
-            ft.NavigationRailDestination(icon=ft.Icons.MENU_BOOK, label="Recetas")
+            ft.NavigationRailDestination(icon=ft.Icons.MENU_BOOK, label="Crear recetas")
 
         ],
         on_change=handle_route_change

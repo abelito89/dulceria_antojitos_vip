@@ -31,3 +31,16 @@ def listar_materiales_service() -> list:
     """
 
     return listar_materiales()
+
+
+def buscar_materia_prima_service(material: str) -> list:
+    """Ejecuta la función listar_materiales() para obtener una lista de materias primas que coincidan con el término de búsqueda.
+
+    Args:
+        material (str): El término de búsqueda para filtrar las materias primas.
+
+    Returns:
+        list: Una lista de nombres de materias primas que coinciden con el término de búsqueda.
+    """
+    materiales = listar_materiales()
+    return [m for m in materiales if material.lower() in m["nombre"].lower()]

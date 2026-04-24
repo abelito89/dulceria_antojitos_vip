@@ -1,9 +1,29 @@
+# --- Directorios de Proyecto ---
 bibliografia/
 .venv/
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
 .env
 prompt.txt
 data/
+plan_mejoras_visuales.md
+prompt.txt
+PLAN_APRENDIZAJE.md
+
+# --- Específico de Flet / Flutter / Android ---
+app/build/
+app/android_python_deps/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.dart_tool/
+local.properties
+
+# --- Archivos temporales y Logs ---
+*.log
+*.pyc
+*.pyo
+*.pyd
+
+# --- Editores ---
+.vscode/
+.idea/

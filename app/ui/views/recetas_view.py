@@ -10,7 +10,7 @@ tipografia = Typography()
 alignments = Alignments()
 
 
-def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn_confirmar):
+def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn_confirmar,resultado_ingredientes):
     """
     Construye la sección de UI para agregar ingredientes a una receta.
 
@@ -27,7 +27,7 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
         content=ft.Column(
                     [
                         ft.Container(
-                            ft.Text("Agregar", style = tipografia.SUBTITLE),
+                            ft.Text("Agregar ingredientes a la receta creada", style = tipografia.SUBTITLE),
                                     padding=espaciados.MD,
                                     border_radius=sizes.RADIUS,
                                     width=sizes.FORM_WIDTH
@@ -35,14 +35,16 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
                         materia_prima_input,
                         cantidad_input,
                         btn_add,
-                        btn_confirmar
+                        btn_confirmar,
+                        resultado_ingredientes
                     ],
-                    visible=True
+                    visible=True,
+                    scroll=ft.ScrollMode.AUTO
         ),
         padding=espaciados.MD,
         border_radius=sizes.RADIUS,
-        bgcolor="blues",
-        width=sizes.FORM_WIDTH
+        width=sizes.FORM_WIDTH,
+        expand=True
     )
 
 def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
@@ -71,7 +73,7 @@ def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
                                     ),
                                     padding=espaciados.MD,
                                     width=sizes.FORM_WIDTH,
-                                    bgcolor="blue"
+                                    
                                 ),
                                 nombre_input,
                                 rendimiento_input,
@@ -84,7 +86,8 @@ def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
                 ),
                 padding=espaciados.MD,
                 border_radius=sizes.RADIUS,
-                width=1200
+                width=None,
+                expand=True
                 
     )
 
@@ -108,6 +111,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     rendimiento_input = ft.TextField(label="Rendimiento (unidades que produce la receta)")
 
     resultado = ft.Text()
+    resultado_ingredientes = ft.Text()
     ingredientes_container = ft.Column(visible=True)
     materia_prima_input = ft.Container(
                 content=ft.Dropdown(
@@ -190,7 +194,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             e,
             materia_prima_input,
             cantidad_input,
-            resultado,
+            resultado_ingredientes,
             page,
             agregar_ingrediente_cb
         ),
@@ -198,7 +202,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
     )
 
     boton_confirmar_receta = ft.ElevatedButton(
-        "Confirmar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44,
+        "Confirmar Receta",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
         disabled=True
     )
 
@@ -209,7 +213,8 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         materia_prima_input,
         cantidad_input,
         boton_agregar_ingrediente,
-        boton_confirmar_receta
+        boton_confirmar_receta,
+        resultado_ingredientes
     )
     boton_guardar = ft.ElevatedButton(
         "Guardar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
@@ -235,8 +240,11 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             ],
             horizontal_alignment=alignments.COLUMN_CROSS,
             alignment=alignments.COLUMN_MAIN,
+            scroll=ft.ScrollMode.AUTO,
+            expand=True,
         ),
         padding=espaciados.MD,
         border_radius=sizes.RADIUS,
-        bgcolor=colores.SURFACE
+        bgcolor=colores.SURFACE,
+        expand=True
     )

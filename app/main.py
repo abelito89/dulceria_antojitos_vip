@@ -38,7 +38,7 @@ def main(page: ft.Page):
 
         init_db()
 
-        page.add(ft.Text("DB OK"))
+        
 
     except Exception as e:
         page.add(ft.Text(f"ERROR INIT_DB: {e}"))

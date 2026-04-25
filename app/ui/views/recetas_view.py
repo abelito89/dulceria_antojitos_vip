@@ -1,7 +1,13 @@
 import flet as ft
 from state.receta_context import get_receta_activa, set_receta_activa, clear_receta_activa
+from ui.theme import Colors, Spacing, Sizes, Typography, Alignments
+from ui.handlers.recetas_handlers import on_agregar_ingrediente
 
-
+colores = Colors()
+espaciados = Spacing()
+sizes = Sizes()
+tipografia = Typography()
+alignments = Alignments()
 
 
 def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn_confirmar):
@@ -17,15 +23,26 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
     Returns:
         ft.Column: Contenedor con los controles de ingredientes.
     """
-    return ft.Column(
-        [
-        ft.Text("Agregar ingredientes a la receta"),
-        materia_prima_input,
-        cantidad_input,
-        btn_add,
-        btn_confirmar
-        ],
-        visible=True
+    return ft.Container(
+        content=ft.Column(
+                    [
+                        ft.Container(
+                            ft.Text("Agregar", style = tipografia.SUBTITLE),
+                                    padding=espaciados.MD,
+                                    border_radius=sizes.RADIUS,
+                                    width=sizes.FORM_WIDTH
+                        ),
+                        materia_prima_input,
+                        cantidad_input,
+                        btn_add,
+                        btn_confirmar
+                    ],
+                    visible=True
+        ),
+        padding=espaciados.MD,
+        border_radius=sizes.RADIUS,
+        bgcolor="blues",
+        width=sizes.FORM_WIDTH
     )
 
 def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
@@ -41,16 +58,34 @@ def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
     Returns:
         ft.Column: Contenedor con los controles del formulario de receta.
     """
-    return ft.Column(
-        [
-            ft.Text("Agregar nueva receta"),
-            nombre_input,
-            rendimiento_input,
-            boton,
-            resultado,
-            ft.Divider()
-        ],
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    return ft.Container(
+                content=ft.Column(
+                            [
+                                ft.Container(
+                                    ft.Text(
+                                        "Agregar nueva receta", 
+                                        style=tipografia.SUBTITLE,
+                                        color=colores.TEXT,
+                                        text_align=tipografia.ALIGN_LEFT,
+                                        expand=True
+                                    ),
+                                    padding=espaciados.MD,
+                                    width=sizes.FORM_WIDTH,
+                                    bgcolor="blue"
+                                ),
+                                nombre_input,
+                                rendimiento_input,
+                                boton,
+                                resultado,
+                                ft.Divider()
+                            ],
+                            horizontal_alignment=alignments.COLUMN_CROSS,
+                            alignment=alignments.COLUMN_MAIN                         
+                ),
+                padding=espaciados.MD,
+                border_radius=sizes.RADIUS,
+                width=1200
+                
     )
 
 def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agregar_ingrediente_cb):
@@ -74,49 +109,25 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
 
     resultado = ft.Text()
     ingredientes_container = ft.Column(visible=True)
-    materia_prima_input = ft.Dropdown(
-        label="Ingrediente",
-        width=250,
-        options=[
-            ft.dropdown.Option(
-                key=str(m["id"]),
-                text=m["nombre"]
-            )
-            for m in lista_materiales
-        ]
+    materia_prima_input = ft.Container(
+                content=ft.Dropdown(
+                    label="Ingrediente",
+                    width=250,
+                    options=[
+                        ft.dropdown.Option(
+                            key=str(m["id"]),
+                            text=m["nombre"]
+                        )
+                        for m in lista_materiales
+                    ],
+                    
+                   
+                ),
+                width=sizes.FORM_WIDTH,
+                
     )
     cantidad_input = ft.TextField(label="Cantidad")
-    
-    def on_agregar_ingrediente(e, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb):
-        """Maneja el evento de agregar ingrediente a la receta. Valida los campos y llama al callback para agregar el ingrediente.
-         Requiere que la receta ya haya sido guardada para tener un ID válido.
-        """
-        receta_id = get_receta_activa(page)
-        try:
-            if not receta_id:
-                resultado.value = "Primero debes guardar la receta"
-                page.update()
-                return
 
-            if not materia_prima_input.value:
-                resultado.value = "Selecciona una materia prima"
-                page.update()
-                return
-
-            if not cantidad_input.value or not cantidad_input.value.replace(".", "", 1).isdigit():
-                resultado.value = "Cantidad inválida"
-                page.update()
-                return
-        
-
-            agregar_ingrediente_cb(e, receta_id, materia_prima_input.value, cantidad_input.value, resultado, page)
-
-            materia_prima_input.value = None
-            cantidad_input.value = ""
-            page.update()
-        except Exception as ex:
-            resultado.value = f"Error al agregar ingrediente: {str(ex)}"
-            page.update()
         
     def on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, btn_add, agregar_receta_cb):
         """Maneja el evento de guardar la receta. Valida los campos, llama al callback para agregar 
@@ -160,7 +171,8 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         # Limpiar inputs
         nombre_input.value = ""
         rendimiento_input.value = ""
-        materia_prima_input.value = None
+        materia_prima_input.content.value = None
+        materia_prima_input.content.update()
         cantidad_input.value = ""
 
         # Reset UI
@@ -169,17 +181,24 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         boton.disabled = False
 
         resultado.value = "Receta confirmada correctamente"
-
+        resultado.update()
         page.update()
         
     boton_agregar_ingrediente = ft.ElevatedButton(
-        "Agregar ingrediente",
-        on_click=lambda e: on_agregar_ingrediente(e, materia_prima_input, cantidad_input, resultado, page, agregar_ingrediente_cb),
+        "Agregar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, 
+        on_click=lambda e: on_agregar_ingrediente(
+            e,
+            materia_prima_input,
+            cantidad_input,
+            resultado,
+            page,
+            agregar_ingrediente_cb
+        ),
         disabled=True
     )
 
     boton_confirmar_receta = ft.ElevatedButton(
-        "Confirmar receta",
+        "Confirmar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44,
         disabled=True
     )
 
@@ -193,7 +212,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         boton_confirmar_receta
     )
     boton_guardar = ft.ElevatedButton(
-        "Guardar",
+        "Guardar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
         on_click=lambda e: on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb)
     )
     receta_id = get_receta_activa(page)
@@ -203,16 +222,21 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         boton_confirmar_receta.disabled = False
         boton_guardar.disabled = True
 
-    return ft.Column(
-        [
-            build_receta_form(
-                nombre_input,
-                rendimiento_input,
-                boton_guardar,
-                resultado
-            ),
-            ingredientes_container
-        ],
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        alignment=ft.MainAxisAlignment.CENTER
+    return ft.Container(
+        content=ft.Column(
+            [
+                build_receta_form(
+                    nombre_input,
+                    rendimiento_input,
+                    boton_guardar,
+                    resultado
+                ),
+                ingredientes_container
+            ],
+            horizontal_alignment=alignments.COLUMN_CROSS,
+            alignment=alignments.COLUMN_MAIN,
+        ),
+        padding=espaciados.MD,
+        border_radius=sizes.RADIUS,
+        bgcolor=colores.SURFACE
     )

@@ -1,4 +1,4 @@
-# Angelica — Aplicación Flet (versión actual) que calcula costos de productos elaborados en dulcería.
+# Aplicación Flet que calcula costos de productos elaborados en dulcería, personalizado en la dulcería: Antojitos VIP
 
 Resumen
 - Aplicación de escritorio/móvil creada con Flet (v0.84).

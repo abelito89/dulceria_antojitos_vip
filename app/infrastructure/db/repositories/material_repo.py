@@ -1,6 +1,7 @@
 from infrastructure.db.db import get_connection
 from typing import Dict
 import sqlite3
+from infrastructure.db.repositories.lot_repo import get_max_price_available
 
 def get_unidades_by_materia_prima(materia_prima_id: int) -> Dict:
     """Realiza consulta SQL para obtener la unidad base, unidad de consumo y factor de conversión
@@ -90,4 +91,9 @@ def listar_materiales() -> list[Dict]:
     print(">>> LISTAR MATERIALES FIN")
     conn.close()
 
-    return [{"id": row["id"], "nombre": row["nombre_insumo"], "unidad_base": row["unidad_base"], "unidad_consumo": row["unidad_consumo"], "factor_conversion": row["factor_conversion"]} for row in rows]
+    return [{"id": row["id"], 
+             "nombre": row["nombre_insumo"], 
+             "unidad_base": row["unidad_base"], 
+             "unidad_consumo": row["unidad_consumo"], 
+             "factor_conversion": row["factor_conversion"],
+             "precio_maximo_existente": get_max_price_available(row["id"])} for row in rows]

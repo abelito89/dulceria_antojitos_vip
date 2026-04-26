@@ -6,6 +6,7 @@ from services.recipe_service import agregar_nueva_receta, agregar_ingrediente
 from state.receta_context import set_receta_activa
 from ui.components.crear_item_materia_prima import crear_item_materia_prima
 import flet as ft
+from infrastructure.db.repositories.lot_repo import get_max_price_available
 
 
 def calcular_click(e,resultado_container,receta_dropdown,page) -> None:
@@ -264,7 +265,8 @@ def seleccionar_materia_prima_click(materia: dict, detalle_container: ft.Column,
         ft.Text(f"Nombre: {materia.get('nombre', 'N/A')}"),
         ft.Text(f"Unidad Base: {materia.get('unidad_base', 'N/A')}"),
         ft.Text(f"Unidad Consumo: {materia.get('unidad_consumo', 'N/A')}"),
-        ft.Text(f"Factor de Conversión: {materia.get('factor_conversion', 'N/A')}")
+        ft.Text(f"Factor de Conversión: {materia.get('factor_conversion', 'N/A')}"),
+        ft.Text(f"Máximo precio disponible: {get_max_price_available(materia.get('id', 'N/A'))}")
         
     ]
     

@@ -4,7 +4,9 @@ from ui.ui import main as ui_main
 from infrastructure.db.db import set_db_path
 from pathlib import Path
 import sys
+from ui.theme import Colors
 
+colors = Colors()
 
 def get_base_path() -> Path:
     # Android (Flet APK siempre cae aquí)
@@ -27,6 +29,7 @@ def main(page: ft.Page):
 
         # 2. Agregamos el servicio a la página para que sea persistente en la sesión [6]
         page.services.append(sp)
+        page.bgcolor = colors.SURFACE
     
         base_path = get_base_path()
         

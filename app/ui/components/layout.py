@@ -1,5 +1,8 @@
 import flet as ft
 from ui.router import get_view_by_index
+from ui.theme import Colors
+
+colors = Colors()
 
 def create_app_layout(page: ft.Page) -> ft.Row:
     """Crea el layout principal de la aplicación con una barra de navegación lateral y un área de contenido.
@@ -35,7 +38,8 @@ def create_app_layout(page: ft.Page) -> ft.Row:
             ft.NavigationRailDestination(icon=ft.Icons.MENU_BOOK, label="Crear recetas")
 
         ],
-        on_change=handle_route_change
+        on_change=handle_route_change,
+        bgcolor=colors.BACKGROUND
     )
 
     # Carga inicial manual

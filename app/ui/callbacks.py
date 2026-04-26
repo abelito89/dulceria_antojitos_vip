@@ -230,7 +230,7 @@ def agregar_ingrediente_click(
 def buscar_materia_prima_click(
     e: ft.Event,
     search_input: ft.TextField,
-    lista: ft.Column,
+    lista: ft.ListView,
     resultado: ft.Text,
     page: ft.Page,
     on_select_fn: callable

@@ -1,6 +1,12 @@
 import flet as ft
 from services.recipe_service import listar_recetas
 from typing import Callable, Dict, Any
+from ui.theme import Colors, Sizes, Typography, Alignments
+
+colores = Colors()
+sizes = Sizes()
+typography = Typography()
+alignments = Alignments()
 
 
 
@@ -25,14 +31,15 @@ def build_calculadora_view(page: ft.Page, calcular_click: Callable) -> ft.Contro
                 text=r["nombre"]
             )
             for r in recetas
-        ]
+        ],
+        bgcolor=colores.BACKGROUND
     )
     resultado_container = ft.Container()
     receta_dropdown = dropdown
     # Botón
-    boton = ft.ElevatedButton("Calcular", on_click=lambda e: calcular_click(e, resultado_container, receta_dropdown, page))
+    boton = ft.ElevatedButton("Calcular", bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,on_click=lambda e: calcular_click(e, resultado_container, receta_dropdown, page))
     return ft.Column([
-        ft.Text("Ingrese el ID de la receta para calcular su costo"),
+        ft.Text("Ingrese el nombre de la receta para calcular su costo", style=typography.SUBTITLE),
         receta_dropdown,
         boton,
         resultado_container

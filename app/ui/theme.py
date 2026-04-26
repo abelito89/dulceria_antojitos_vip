@@ -8,6 +8,7 @@ class Colors:
     SURFACE = "#0B0101"
     TEXT = "#FBF9F9"
     ERROR = "#F81515"
+    SUCCESS = "#4CAF50"
 
 
 class Spacing:

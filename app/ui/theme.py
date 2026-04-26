@@ -6,7 +6,7 @@ class Colors:
     PRIMARY_LIGHT = "#A7681C"
     BACKGROUND = "#370606"
     SURFACE = "#0B0101"
-    TEXT = "#FBF9F9"
+    TEXT = "#FAFBF9"
     ERROR = "#F81515"
     SUCCESS = "#4CAF50"
 

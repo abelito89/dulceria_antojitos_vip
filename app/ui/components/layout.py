@@ -31,11 +31,11 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         label_type=ft.NavigationRailLabelType.ALL,
         min_width=100,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.Icons.CALCULATE, label="Calculadora de costos"),
-            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Agregar materias primas"),
-            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label="Consultar materias primas"),
-            ft.NavigationRailDestination(icon=ft.Icons.SHOPPING_CART, label="Compras"),
-            ft.NavigationRailDestination(icon=ft.Icons.MENU_BOOK, label="Crear recetas")
+            ft.NavigationRailDestination(icon=ft.Icons.CALCULATE, label=ft.Text("Calculadora de costos", color=colors.TEXT)),
+            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label=ft.Text("Agregar materias primas", color=colors.TEXT)),
+            ft.NavigationRailDestination(icon=ft.Icons.INVENTORY, label=ft.Text("Consultar materias primas", color=colors.TEXT)),
+            ft.NavigationRailDestination(icon=ft.Icons.SHOPPING_CART, label=ft.Text("Compras", color=colors.TEXT)),
+            ft.NavigationRailDestination(icon=ft.Icons.MENU_BOOK, label=ft.Text("Crear recetas", color=colors.TEXT))
 
         ],
         on_change=handle_route_change,

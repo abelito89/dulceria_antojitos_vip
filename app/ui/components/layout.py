@@ -14,7 +14,7 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         ft.Row: El layout principal de la aplicación.
     """
     # El contenedor donde cambiaremos el contenido
-    content_area = ft.Container(expand=True)
+    content_area = ft.Container(expand=True, alignment=ft.Alignment.TOP_CENTER)
 
     def handle_route_change(e) -> None:
         """Maneja el cambio de ruta en la barra de navegación lateral.
@@ -64,7 +64,8 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         controls=[
             icon_button
         ],
-        expand=True
+        expand=False,
+        width=48
     )
 
     rail_section = ft.Container(

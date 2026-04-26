@@ -75,7 +75,6 @@ def listar_materiales() -> list[Dict]:
     Returns:
         list: Una lista de diccionarios con las claves 'id' y 'nombre' para cada materia prima.
     """
-    print(">>> LISTAR MATERIALES INICIO")
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -88,7 +87,7 @@ def listar_materiales() -> list[Dict]:
     )
 
     rows = cursor.fetchall()
-    print(">>> LISTAR MATERIALES FIN")
+    
     conn.close()
 
     return [{"id": row["id"], 

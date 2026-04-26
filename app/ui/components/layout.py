@@ -26,6 +26,16 @@ def create_app_layout(page: ft.Page) -> ft.Row:
         content_area.content = get_view_by_index(e.control.selected_index, page)
         page.update()
 
+    rail_visible = True
+
+    def toggle_rail(e):
+        nonlocal rail_visible
+
+        rail_visible = not rail_visible
+        rail_section.width = 120 if rail_visible else 0
+
+        page.update()
+
     nav_rail = ft.NavigationRail(
         selected_index=0,
         label_type=ft.NavigationRailLabelType.ALL,
@@ -45,12 +55,36 @@ def create_app_layout(page: ft.Page) -> ft.Row:
     # Carga inicial manual
     content_area.content = get_view_by_index(0, page)
 
-    # Retornamos el Row directamente, que es lo que pide page.add()
-    return ft.Row(
+    icon_button =  ft.IconButton(
+        icon=ft.Icons.MENU,
+        on_click=toggle_rail
+    )
+
+    columna = ft.Column(
         controls=[
-            nav_rail,
-            ft.VerticalDivider(width=1),
+            icon_button
+        ],
+        expand=True
+    )
+
+    rail_section = ft.Container(
+        content=ft.Row(
+            [
+                nav_rail,
+                ft.VerticalDivider(width=1)
+            ],
+            spacing=0
+        ),
+        width=200  # aquí controlas el ancho del rail
+    )
+
+    fila = ft.Row(
+        controls=[
+            rail_section,
+            columna,
             content_area
         ],
         expand=True
     )
+
+    return fila

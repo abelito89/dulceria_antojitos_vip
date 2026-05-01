@@ -5,6 +5,7 @@ from infrastructure.db.db import set_db_path
 from pathlib import Path
 import sys
 from ui.theme import Colors
+from ui.theme_helpers import error_text
 
 colors = Colors()
 
@@ -44,13 +45,13 @@ def main(page: ft.Page):
         
 
     except Exception as e:
-        page.add(ft.Text(f"ERROR INIT_DB: {e}"))
+        page.add(error_text(f"ERROR INIT_DB: {e}"))
         return
 
     try:
         ui_main(page)
     except Exception as e:
-        page.add(ft.Text(f"ERROR UI: {e}"))
+        page.add(error_text(f"ERROR UI: {e}"))
 
 
 if __name__ == "__main__":

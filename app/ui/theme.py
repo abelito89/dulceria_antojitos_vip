@@ -2,13 +2,20 @@
 import flet as ft
 
 class Colors:
-    PRIMARY = "#F8230B"
-    PRIMARY_LIGHT = "#A7681C"
+    # Existentes
+    PRIMARY = "#F8230B"      # Rojo - para acciones destructivas o peligrosas
+    PRIMARY_LIGHT = "#A7681C" # Marrón/ámbar
     BACKGROUND = "#370606"
     SURFACE = "#0B0101"
     TEXT = "#FAFBF9"
     ERROR = "#F81515"
     SUCCESS = "#4CAF50"
+    
+    # NUEVOS - para diferenciar acciones
+    CONFIRM = "#2196F3"      # Azul - para confirmar, guardar, aceptar
+    WARNING = "#FF9800"       # Naranja - para acciones que requieren atención
+    INFO = "#00BCD4"          # Cyan - información
+    SECONDARY = "#9C27B0"     # Morado - acciones secundarias
 
 
 class Spacing:

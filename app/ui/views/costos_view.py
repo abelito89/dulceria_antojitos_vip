@@ -2,6 +2,7 @@ import flet as ft
 from services.recipe_service import listar_recetas
 from typing import Callable, Dict, Any
 from ui.theme import Colors, Sizes, Typography, Alignments
+from ui.theme_helpers import confirm_button,body_text,heading3, success_text
 
 colores = Colors()
 sizes = Sizes()
@@ -36,10 +37,10 @@ def build_calculadora_view(page: ft.Page, calcular_click: Callable) -> ft.Contro
     )
     resultado_container = ft.Container()
     receta_dropdown = dropdown
-    # Botón
-    boton = ft.ElevatedButton("Calcular", bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,on_click=lambda e: calcular_click(e, resultado_container, receta_dropdown, page))
+
+    boton =confirm_button("Calcular", on_click=lambda e: calcular_click(e, resultado_container, receta_dropdown, page) )
     return ft.Column([
-        ft.Text("Ingrese el nombre de la receta para calcular su costo", style=typography.SUBTITLE),
+        body_text("Ingrese el nombre de la receta para calcular su costo"),
         receta_dropdown,
         boton,
         resultado_container
@@ -62,10 +63,11 @@ def costos_view(resultado: Dict[str, Any]) -> ft.Control:
     return ft.Container(
         content=ft.Column(
             [
-                ft.Text(f"Producto: {resultado['nombre_producto']}",weight=ft.FontWeight.BOLD, size=18),
-                ft.Text(f"Costo total: {resultado['costo_total']:.2f}", weight=ft.FontWeight.BOLD, size=16),
-                ft.Text(f"Costo unitario: {resultado['costo_unitario']:.2f}", weight=ft.FontWeight.BOLD, size=14)
+                heading3(f"Producto: {resultado['nombre_producto']}"),
+                success_text(f"Costo total: ${resultado['costo_total']:.2f}"),
+                body_text(f"Costo unitario: ${resultado['costo_unitario']:.2f}")
             ]
         )
     )
+
         

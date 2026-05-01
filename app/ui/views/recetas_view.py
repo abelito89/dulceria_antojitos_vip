@@ -1,6 +1,7 @@
 import flet as ft
 from state.receta_context import get_receta_activa, set_receta_activa, clear_receta_activa
 from ui.theme import Colors, Spacing, Sizes, Typography, Alignments
+from ui.theme_helpers import confirm_button, draft_button, heading2, section, form_group
 from ui.handlers.recetas_handlers import on_agregar_ingrediente
 
 colores = Colors()
@@ -23,7 +24,7 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
     Returns:
         ft.Column: Contenedor con los controles de ingredientes.
     """
-    texto_agregar_ingredientes = ft.Text("Agregar ingredientes a la receta creada", style = tipografia.SUBTITLE)
+    texto_agregar_ingredientes = heading2("Agregar ingredientes a la receta creada")
     container_boton_agregar_ingredientes = ft.Container(
                                 content=texto_agregar_ingredientes,
                                 padding=espaciados.MD,
@@ -33,11 +34,13 @@ def build_ingredientes_section(materia_prima_input, cantidad_input, btn_add, btn
     columna_container_boton_agregar_ingredientes = ft.Column(
                     [
                         container_boton_agregar_ingredientes,               
-                        materia_prima_input,
-                        cantidad_input,
-                        btn_add,
-                        btn_confirmar,
-                        resultado_ingredientes
+                         form_group([
+                            materia_prima_input,
+                            cantidad_input,
+                            btn_add,
+                            btn_confirmar,
+                            resultado_ingredientes
+                        ])
                     ],
                     visible=True,
                     scroll=ft.ScrollMode.AUTO
@@ -65,39 +68,18 @@ def build_receta_form(nombre_input, rendimiento_input, boton, resultado):
     Returns:
         ft.Column: Contenedor con los controles del formulario de receta.
     """
-    texto_agregar_nueva_receta = ft.Text(
-                                        "Agregar nueva receta", 
-                                        style=tipografia.SUBTITLE,
-                                        color=colores.TEXT,
-                                        text_align=tipografia.ALIGN_LEFT,
-                                        expand=True
-                                    )
-    container_texto_agregar_nueva_receta = ft.Container(
-        content=texto_agregar_nueva_receta,
-        padding=espaciados.MD,
-        width=sizes.FORM_WIDTH
-    )
+    
 
-    columna_container_texto_agregar_nueva_receta = ft.Column(
-         [
-            container_texto_agregar_nueva_receta,
+    return section(
+        content=form_group([
             nombre_input,
             rendimiento_input,
             boton,
             resultado,
             ft.Divider()
-         ],
-        horizontal_alignment=alignments.COLUMN_CROSS,
-        alignment=alignments.COLUMN_MAIN
+        ]),
+        title="Agregar nueva receta"
     )
-    contenedor_build_receta_form = ft.Container(
-        content=columna_container_texto_agregar_nueva_receta,
-        padding=espaciados.MD,
-        border_radius=sizes.RADIUS,
-        width=None,
-        expand=True
-    )
-    return contenedor_build_receta_form
 
 def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agregar_ingrediente_cb):
     """
@@ -197,9 +179,7 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         resultado.update()
         page.update()
         
-    boton_agregar_ingrediente = ft.ElevatedButton(
-        "Agregar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, 
-        on_click=lambda e: on_agregar_ingrediente(
+    boton_agregar_ingrediente = draft_button("Agregar", on_click=lambda e: on_agregar_ingrediente(
             e,
             materia_prima_input,
             cantidad_input,
@@ -208,15 +188,15 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
             agregar_ingrediente_cb
         ),
         disabled=True
-    )
+        )
+    
+  
+    boton_confirmar_receta = confirm_button("Confirmar Receta", 
+                                            on_click= lambda e: on_confirmar(e, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, boton_agregar_ingrediente, boton_confirmar_receta, boton_guardar, page),
+                                            disabled=True
+                                            )
 
-    boton_confirmar_receta = ft.ElevatedButton(
-        "Confirmar Receta",bgcolor=colores.SUCCESS, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
-        disabled=True
-    )
-
-
-    boton_confirmar_receta.on_click = lambda e: on_confirmar(e, nombre_input, rendimiento_input, materia_prima_input, cantidad_input, resultado, boton_agregar_ingrediente, boton_confirmar_receta, boton_guardar, page)
+   
 
     ingredientes_container = build_ingredientes_section(
         materia_prima_input,
@@ -225,10 +205,8 @@ def build_recetas_view(page: ft.Page, lista_materiales, agregar_receta_cb, agreg
         boton_confirmar_receta,
         resultado_ingredientes
     )
-    boton_guardar = ft.ElevatedButton(
-        "Guardar", bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
-        on_click=lambda e: on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb)
-    )
+    
+    boton_guardar = draft_button("Guardar", on_click=lambda e: on_guardar(e, nombre_input, rendimiento_input, resultado, page, ingredientes_container, boton_agregar_ingrediente, agregar_receta_cb))
     receta_id = get_receta_activa(page)
 
     if receta_id:

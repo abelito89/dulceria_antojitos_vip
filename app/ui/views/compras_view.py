@@ -2,7 +2,7 @@ import flet as ft
 from ui.callbacks import agregar_lote_click
 from services.material_service import listar_materiales_service
 from ui.theme import Colors, Sizes, Spacing, Typography, Alignments
-from ui.theme_helpers import confirm_button
+from ui.theme_helpers import confirm_button,helper_text, heading2
 
 colores = Colors()
 espaciados = Spacing()
@@ -27,7 +27,8 @@ def build_lot_view(page:ft.Page):
         border=ft.InputBorder.NONE
 
     )
-    text_unidad = ft.Text("Unidad: (se determina por la materia prima seleccionada)", color="yellow")
+    
+    text_unidad=helper_text("La unidad se determina por la materia prima seleccionada")
 
     materia_prima_nombre_input=dropdown
     
@@ -41,7 +42,7 @@ def build_lot_view(page:ft.Page):
     )
     return ft.Column(
         [
-            ft.Text("Agregar nuevo lote", style=tipografia.SUBTITLE),
+            heading2("Agregar nuevo lote"),
             materia_prima_nombre_input,
             text_unidad,
             cantidad_inicial_input,

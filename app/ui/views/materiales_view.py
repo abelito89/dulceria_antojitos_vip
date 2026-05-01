@@ -5,7 +5,7 @@ from ui.callbacks import (
     seleccionar_materia_prima_click,
 )
 from ui.theme import Colors, Sizes, Alignments, Typography
-from ui.theme_helpers import confirm_button
+from ui.theme_helpers import confirm_button, heading2
 
 colores = Colors()
 sizes = Sizes()
@@ -37,7 +37,7 @@ def build_materiales_view(page: ft.Page):
             page,
         ),
     )
-    texto_agregar_materia_prima = ft.Text("Agregar nueva materia prima", style=typography.SUBTITLE)
+    texto_agregar_materia_prima = heading2("Agregar nueva materia prima")
     columna_build_materiales_view = ft.Column(
         [
             texto_agregar_materia_prima,
@@ -87,7 +87,7 @@ def build_consultar_materiales_view(page: ft.Page):
         page,
         on_select_fn=handle_materia_seleccionada,  # Pasamos el manejador
     )
-    texto_consultar_materias_primas = ft.Text("Consultar materias primas", style=typography.SUBTITLE)
+    texto_consultar_materias_primas = heading2("Consultar materias primas")
 
 
     columna_texto_consultar_materias_primas = ft.Container(

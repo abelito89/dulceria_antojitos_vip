@@ -91,10 +91,28 @@ def label_text(text):
     return ft.Text(value=text, style=_LABEL_STYLE, color=_TEXTSEC_COLOR)
 
 def helper_text(text, error=False):
-    """Texto de ayuda o error."""
+    """Texto de ayuda o error (pequeño)."""
     if error:
         return ft.Text(value=text, style=_ERROR_STYLE)
     return ft.Text(value=text, style=_HELPER_STYLE, color=_TEXTSEC_COLOR)
+
+def success_text(text):
+    """Texto de éxito (verde). Usar para mensajes breves positivos."""
+    return ft.Text(
+        value=text,
+        color=Colors.SUCCESS,
+        size=14,
+        weight=ft.FontWeight.W_500
+    )
+
+def error_text(text):
+    """Texto de error (rojo). Usar para mensajes breves de error."""
+    return ft.Text(
+        value=text,
+        color=Colors.ERROR,
+        size=14,
+        weight=ft.FontWeight.W_500
+    )
 
 # ============================================================================
 # BOTONES
@@ -115,38 +133,23 @@ def _base_button(text, on_click, width, disabled, bgcolor):
     )
 
 def confirm_button(text, on_click=None, width=None, disabled=False):
-    """
-    Botón de CONFIRMACIÓN FINAL - Azul.
-    Usar para: Guardar definitivo, Confirmar compra, Aceptar, Enviar.
-    """
+    """Confirmación final - Azul."""
     return _base_button(text, on_click, width, disabled, Colors.CONFIRM)
 
 def primary_button(text, on_click=None, width=None, disabled=False):
-    """
-    Botón PRIMARIO PELIGROSO - Rojo.
-    Usar para: Eliminar, Cancelar definitivo, Acciones destructivas.
-    """
+    """Acción destructiva - Rojo."""
     return _base_button(text, on_click, width, disabled, Colors.PRIMARY)
 
 def draft_button(text, on_click=None, width=None, disabled=False):
-    """
-    Botón de GUARDADO PARCIAL / BORRADOR - Morado.
-    Usar para: Guardar borrador, Guardar parcialmente.
-    """
+    """Guardado parcial / borrador - Morado."""
     return _base_button(text, on_click, width, disabled, Colors.SECONDARY)
 
 def warning_button(text, on_click=None, width=None, disabled=False):
-    """
-    Botón de ADVERTENCIA - Naranja.
-    Usar para: Acciones que requieren atención, Revisar antes de enviar.
-    """
+    """Advertencia - Naranja."""
     return _base_button(text, on_click, width, disabled, Colors.WARNING)
 
 def secondary_button(text, on_click=None, width=None, disabled=False):
-    """
-    Botón SECUNDARIO - Borde sin relleno.
-    Usar para: Volver, Cancelar sin guardar, Cerrar, Neutral.
-    """
+    """Acción neutral - borde sin relleno."""
     return ft.OutlinedButton(
         content=ft.Text(text, color=Colors.TEXT, style=Typography.SUBTITLE),
         on_click=on_click,
@@ -160,10 +163,7 @@ def secondary_button(text, on_click=None, width=None, disabled=False):
     )
 
 def text_button(text, on_click=None, color=None):
-    """
-    Botón de TEXTO - Solo texto.
-    Usar para: Enlaces, Ver más, Agregar otro, Opciones muy secundarias.
-    """
+    """Enlace o acción muy secundaria - solo texto."""
     return ft.TextButton(
         content=ft.Text(
             text,
@@ -172,9 +172,7 @@ def text_button(text, on_click=None, color=None):
             weight=ft.FontWeight.W_500
         ),
         on_click=on_click,
-        style=ft.ButtonStyle(
-            overlay_color=ft.Colors.TRANSPARENT
-        )
+        style=ft.ButtonStyle(overlay_color=ft.Colors.TRANSPARENT)
     )
 
 def icon_button(icon, on_click=None, size=None, tooltip=None, color=None):
@@ -247,7 +245,7 @@ def info_box(content, type="info"):
     )
 
 def badge(text, color=None, bgcolor=None):
-    """Pequeña etiqueta (badge)."""
+    """Pequeña etiqueta."""
     color = color or Colors.PRIMARY
     bgcolor = bgcolor or "#FFE4E1"
     return ft.Container(

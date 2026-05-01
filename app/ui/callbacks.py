@@ -7,6 +7,7 @@ from state.receta_context import set_receta_activa
 from ui.components.crear_item_materia_prima import crear_item_materia_prima
 import flet as ft
 from infrastructure.db.repositories.lot_repo import get_max_price_available
+from ui.theme_helpers import body_text, heading3, helper_text
 
 
 def calcular_click(e,resultado_container,receta_dropdown,page) -> None:
@@ -260,14 +261,13 @@ def seleccionar_materia_prima_click(materia: dict, detalle_container: ft.Column,
     
     # 2. Construimos la UI con todos los atributos
     detalle_container.controls = [
-        ft.Text("Detalles del Material", size=20),
-        ft.Text(f"ID: {materia.get('id', 'N/A')}"),
-        ft.Text(f"Nombre: {materia.get('nombre', 'N/A')}"),
-        ft.Text(f"Unidad Base: {materia.get('unidad_base', 'N/A')}"),
-        ft.Text(f"Unidad Consumo: {materia.get('unidad_consumo', 'N/A')}"),
-        ft.Text(f"Factor de Conversión: {materia.get('factor_conversion', 'N/A')}"),
-        ft.Text(f"Máximo precio disponible: {get_max_price_available(materia.get('id', 'N/A'))}")
-        
+        heading3("Detalles del Material"),           # Título de la sección
+        body_text(f"ID: {materia.get('id', 'N/A')}"),
+        body_text(f"Nombre: {materia.get('nombre', 'N/A')}"),
+        body_text(f"Unidad Base: {materia.get('unidad_base', 'N/A')}"),
+        body_text(f"Unidad Consumo: {materia.get('unidad_consumo', 'N/A')}"),
+        body_text(f"Factor de Conversión: {materia.get('factor_conversion', 'N/A')}"),
+        helper_text(f"Máximo precio disponible: {get_max_price_available(materia.get('id', 'N/A'))}")
     ]
     
     # 3. Refrescamos la pantalla

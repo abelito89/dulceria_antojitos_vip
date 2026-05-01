@@ -5,6 +5,7 @@ from ui.callbacks import (
     seleccionar_materia_prima_click,
 )
 from ui.theme import Colors, Sizes, Alignments, Typography
+from ui.theme_helpers import confirm_button
 
 colores = Colors()
 sizes = Sizes()
@@ -24,8 +25,8 @@ def build_materiales_view(page: ft.Page):
 
     resultado = ft.Text()
 
-    boton_guardar = ft.ElevatedButton(
-        "Guardar",bgcolor=colores.PRIMARY, color=colores.TEXT, height=44, width=sizes.FORM_WIDTH,
+    boton_guardar = confirm_button(
+        "Guardar",
         on_click=lambda e: agregar_materia_prima_click(
             e,
             nombre_input,

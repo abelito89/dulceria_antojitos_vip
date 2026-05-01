@@ -8,6 +8,7 @@ data/
 plan_mejoras_visuales.md
 prompt.txt
 PLAN_APRENDIZAJE.md
+PLAN_RESPONSIVIDAD_MOVIL.md
 
 # --- Específico de Flet / Flutter / Android ---
 app/build/
@@ -27,3 +28,16 @@ local.properties
 # --- Editores ---
 .vscode/
 .idea/
+
+app/assets/
+assets/
+CHEAT_SHEET.md
+COMIENZA_AQUI.md
+CONSEJOS_FLET.md
+EJEMPLO_MIGRACION.md
+GUIA_MIGRACION_THEME.md
+GUIA_UNICA.md
+HOJA_DE_RUTA_VISUAL.md
+CONSEJOS_FLET_084.md
+CONSEJOS_FLET_085.md
+instrucciones.md
